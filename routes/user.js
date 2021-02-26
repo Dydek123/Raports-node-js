@@ -6,10 +6,35 @@ const Comment = require('../models/Comment');
 const Sequelize = require('sequelize');
 const md5 = require('md5');
 const Op = Sequelize.Op;
+const { QueryTypes } = require('sequelize');
+
+const isSet = item => {
+    if (item === null || item === undefined)
+        return false
+    return true
+}
+const capitalizeFirstLetters = (arr) => {
+    for (let i = 0 ; i < arr.length ; i++)
+        arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);;
+    return arr;
+}
 
 /* GET home page. */
 router.get('/login', (req, res, next) => {
-    res.render('login');
+    const cookie = req.session.user;
+    if (isSet(cookie))
+        res.redirect('/')
+    else
+        res.render('login', {errors : ''});
+});
+
+router.get('/register', (req, res, next) => {
+    const cookie = req.session.user;
+    if (isSet(cookie)) {
+        res.render('register', {error: 'Wyloguj się aby przejść dalej'});
+    }
+    else
+        res.render('register', {errors : ''});
 });
 
 router.get('/logout', (req, res) => {
@@ -31,11 +56,25 @@ router.post('/login', (req, res, next) => {
                 req.session.user = email;
                 res.render('index', {cookie: req.session.user})
             }
-            else
-                res.render('login', { errors: 'Nie ma takiego użytkownika' });
+            else {
+                console.log('Nie')
+                res.render('login', {errors: 'Nie ma takiego użytkownika'});
+            }
         })
         .catch(err => console.log(err))
-    // res.render('login', { title: 'Express' });
 });
+
+router.post('/addUser', ((req, res) => {
+    const body = req.body;
+    let {name : fullName , email, password, repeatPassword} = body;
+    fullName = fullName.split(' ');
+    fullName = capitalizeFirstLetters(fullName);
+    let name = fullName[0];
+    let surname = fullName.slice(1).join(' ');
+    password = md5(md5(password))
+    User.create({name, surname, email, password})
+        .then(() => res.redirect('/user/login'))
+        .catch(() => res.render('register', {errors: 'Użytkownik o takim emailu już istnieje'}))
+}))
 
 module.exports = router;

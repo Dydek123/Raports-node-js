@@ -16,7 +16,7 @@ function remcl(){
 const form = document.querySelector("form");
 const detailsInput = form.querySelector('input[name="name"]');
 const emailInput = form.querySelector('input[name="email"]');
-const confirmedPasswordInput = form.querySelector('input[name="repeat-password"]');
+const confirmedPasswordInput = form.querySelector('input[name="repeatPassword"]');
 
 function isEmail(email) {
     return /\S+@\S+\.\S+/.test(email);

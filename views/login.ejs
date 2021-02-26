@@ -75,14 +75,11 @@
                     Nie masz jeszcze konta?<a href="/user/register">Dołącz do nas teraz</a>
                 </div>
 
-<!--                <div class="message">-->
-<!--                    <?php if (isset($messages)) {-->
-<!--                            foreach ($messages as $message){-->
-<!--                                echo $message;-->
-<!--                            }-->
-<!--                        }-->
-<!--                        ?>-->
-<!--                </div>-->
+                <% if (errors) {%>
+                    <div class="message">
+                        <span><%= errors %></span>
+                    </div>
+                <% } %>
             </form>
         </div>
     </div>

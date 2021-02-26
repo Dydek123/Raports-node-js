@@ -2,16 +2,23 @@ const Sequelize = require('sequelize');
 const db = require('../config/config');
 
 const User = db.define('user', {
-    id: {
-        type: Sequelize.INTEGER,
-        primaryKey: true
-    },
     email: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        unique: true
     },
     password: {
         type: Sequelize.STRING
     },
+    name: {
+        type: Sequelize.STRING
+    },
+    surname: {
+        type: Sequelize.STRING
+    },
+    id_role: {
+        type: Sequelize.INTEGER,
+        defaultValue: 1.
+    }
 }, {
     timestamps: false,
     tableName: 'users'
