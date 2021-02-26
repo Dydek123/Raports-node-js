@@ -1,0 +1,69 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: "Montserrat",sans-serif;
+    height: 100vh;
+    background-image: linear-gradient(125deg,#4DA8DA,#B8E994);
+}
+
+.container{
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    color: #343434;
+
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+}
+
+.container h1{
+    font-size: 12em;
+    margin: 0;
+    font-weight: 900;
+    letter-spacing: 2rem;
+    background: url(../img/error_bg.jpg) center no-repeat;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+}
+
+.container a{
+    text-decoration: none;
+    justify-self: center;
+    width: 10vw;
+    margin-left: auto;
+    margin-right: auto;
+    background: #203647;
+    color: #FFFAFA;
+    padding: 1rem 2rem;
+    border-radius: 2rem;
+    font-size: 1rem;
+    text-transform: uppercase;
+    transition: all 0.4s ease-in-out;
+}
+
+.container a:hover{
+    background: #007CC7;
+}
+
+@media (max-device-width: 500px){
+    .container h1{
+        font-size: 8rem;
+        letter-spacing: 1.4rem;
+    }
+
+    .container a{
+        width: 35vw;
+        padding: 1rem 2rem;
+        font-size: 1rem;
+    }
+}
+
+@media (max-device-width: 350px){
+    .container h1{
+        font-size: 6rem;
+        letter-spacing: 1rem;
+    }
+
+}
