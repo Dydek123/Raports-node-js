@@ -42,6 +42,14 @@ router.get('/logout', (req, res) => {
     res.redirect('/user/login');
 });
 
+router.get('/profile', (req, res) => {
+    User.findOne({where : {email:req.session.user}})
+        .then(user => {
+            res.render('profile', {user})
+        })
+        .catch(() => res.redirect('/user/login'))
+})
+
 router.post('/login', (req, res, next) => {
     const body = req.body;
     let {email, password} = body;
@@ -71,10 +79,16 @@ router.post('/addUser', ((req, res) => {
     fullName = capitalizeFirstLetters(fullName);
     let name = fullName[0];
     let surname = fullName.slice(1).join(' ');
-    password = md5(md5(password))
-    User.create({name, surname, email, password})
-        .then(() => res.redirect('/user/login'))
-        .catch(() => res.render('register', {errors: 'Użytkownik o takim emailu już istnieje'}))
+    if(!surname) {
+        res.render('register', {errors: 'Wprowadź imię i nazwisko'})
+    } else if (password !== repeatPassword) {
+        res.render('register', {errors: 'Hasła nie są takie same'})
+    } else {
+        password = md5(md5(password))
+        User.create({name, surname, email, password})
+            .then(() => res.redirect('/user/login'))
+            .catch(() => res.render('register', {errors: 'Użytkownik o takim emailu już istnieje'}))
+    }
 }))
 
 module.exports = router;

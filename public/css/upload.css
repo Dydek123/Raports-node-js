@@ -98,6 +98,10 @@ form{
 	transition: .3s;
 }
 
+.hidden-input{
+	display: none !important;
+}
+
 .input-div > div{
     position: relative;
 	height: 3rem;
@@ -260,7 +264,7 @@ select::-ms-expand {
 }
 
 .new-input{
-	display: none;
+	display: flex;
 }
 
 .public-select{

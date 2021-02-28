@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!--FONT AWESOME-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/57045c6330.js" crossorigin="anonymous"></script>
+
+    <!--FONTS GOOGLE-->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Poppins&family=Lato&display=swap" rel="stylesheet">
+
+    <!--SHADOW ON SCROLL-->
+    <script type="text/javascript" src="/scripts/topnav_shadow.js" defer></script>
+    <script type="text/javascript" src="/scripts/upload.js" defer></script>
+    <script type="text/javascript" src="/scripts/show_uploads_categories.js" defer></script>
+
+    <link rel="stylesheet" type="text/css" href="/css/upload.css">
+    <title>Cboard - upload document</title>
+</head>
+
+<body>
+<div class="upload-container">
+    <div class="upload-box">
+        <div class="login-content">
+            <form action="/content/new" method="post" encType="multipart/form-data">
+                <div class="logo">
+                    <a href="index"><img src="/img/login/logo-dark.svg"></a>
+                </div>
+                <h2>Nowy dokument</h2>
+
+                <div class="select">
+                    <select name="category" id="slct">
+                        <option selected disabled>Wybierz kategorie</option>
+                        <option value="Raporty">Raporty</option>
+                        <option value="Dokumentacja">Dokumentacja</option>
+                    </select>
+                </div>
+
+                <div class="select">
+                    <select name="documentType" id="slct">
+                        <option selected disabled>Wybierz podkategorie</option>
+                        <option value="Obsługa podatku VAT">Obsługa podatku VAT</option>
+                        <option value="HR">HR</option>
+                    </select>
+                </div>
+
+                <div class="select">
+                    <select name="documentName" id="slct" class="slct-content">
+                        <option selected disabled>Wybierz dokument</option>
+                        <option value="Jak liczyć podatek VAT">Jak liczyć podatek VAT</option>
+                        <option value="Rozliczenia podatku">Rozliczenia podatku</option>
+                        <option value="new">Stwórz nowy dokument</option>
+                    </select>
+                </div>
+
+                <div class="select hidden-input">
+                    <select name="isPublic" id="slct">
+                        <option selected disabled>Wybierz widoczność</option>
+                        <option value="1">Publiczne</option>
+                        <option value="0">Prywatne</option>
+                    </select>
+                </div>
+
+                <div class="input-div hidden-input">
+                    <div>
+                        <h5>Tytuł</h5>
+                        <input name="title" type="text" class="input">
+                    </div>
+                </div>
+
+                <div class="input-div">
+                    <div>
+                        <h5>Plik</h5>
+                        <input name="file" type="file" class="file-upload input">
+                    </div>
+                </div>
+
+<!--                <div class="message">-->
+<!--                    <?php if (isset($messages)) {-->
+<!--                        foreach ($messages as $message){-->
+<!--                            echo $message;-->
+<!--                        }-->
+<!--                    }-->
+<!--                    ?>-->
+<!--                </div>-->
+                
+                <button type="submit" class="btn">Prześlij</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+
+<template id="label-option">
+    <select name="document-type" id="slct" onchange="changeMe(this); ">
+        <option selected disabled>Wybierz podkategorie</option>
+    </select>
+</template>
+
+<template id="select-option">
+    <option value="option">option</option>
+</template>
+
+<template id="disabled-option">
+    <option selected disabled>Wybierz dokument</option>
+</template>
+
+<template id="new-option">
+    <option value="new">Stwórz nowy dokument</option>
+</template>

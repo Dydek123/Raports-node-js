@@ -24,7 +24,7 @@ h1{
     font-family: 'Josefin Sans', sans-serif;
 }
 #main-header{
-    background-image: url("../img/main-page/paper.jpg");
+    background-image: url("../img/main-page/Documents.jpg");
     background-position:  left;
     background-repeat: no-repeat;
     background-size: cover;
@@ -761,7 +761,7 @@ h1{
     margin-bottom: 0;
 }
 
-.materials button{
+.materials a{
     height: 100%;
     width: 100%;
     cursor: pointer;
@@ -804,17 +804,17 @@ hr {
 }
 
 #raports-img{
-    background-image: url(../img/main-page/raports.jpg);
+    background-image: url(../img/main-page/Raports.jpg);
     background-size: cover;
     background-position: center;
 }
 
 #documentation-img{
-    background-image: url(../img/main-page/paper.jpg);
+    background-image: url(../img/main-page/Documents.jpg);
 }
 
 #faq-img{
-    background-image: url(../img/main-page/faq.jpg);
+    background-image: url(../img/main-page/Faq.jpg);
     background-size: cover;
     background-position: center;
 }
@@ -1356,7 +1356,11 @@ hr {
 }
 
 #finances-header-shadow{
-    background: rgba(0, 124, 199, 0.07) 0% 0% no-repeat padding-box;
+    background-image: url(../img/main-page/Faq.jpg);
+    background-position: left;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
 }
 
 .documentation-box{
@@ -1621,7 +1625,6 @@ h5{
 }
 
 .documentation-menu div{
-    padding-right: 1vw;
     top: 10vh;
 }
 
@@ -1810,9 +1813,8 @@ textarea:focus{
     text-align: right;
     color: #12232E;
     border-right: 2px solid var(--very-dark-blue);
-    padding: .35rem .35rem 1rem;
+    padding: .35rem 0 1rem .35rem;
     transition: .3s;
-    cursor: pointer;
     font-size: 1.2rem;
     position: sticky;
     position: -webkit-sticky;
@@ -1822,12 +1824,9 @@ textarea:focus{
     margin-bottom: 0.5rem;
 }
 
-.nav__link:hover{
-    background-color: #f3f9fb;
-}
-
 #new-content-link{
     color: #929aab;
+    margin-right: 1rem;
 }
 
 #new-content-link:hover{
@@ -1848,29 +1847,48 @@ textarea:focus{
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+    align-items: center;
+    height: 1.5em;
     transition: .5s;
     margin: 0;
+    cursor: pointer;
+    border-bottom: 1px solid #d4d4d4;
+    padding-right: 1rem;
 }
+
+.collapse__link:hover{
+    background-color: #f3f9fb;
+}
+
+.collapse__link-faq{
+    color: black;
+    padding-right: 20px;
+}
+
 .fa-caret-down{
-    padding-top: 0.3rem;
-    padding-left: 0.3rem;
+    width: 20px;
     transition: all .4s ease-in-out;
 }
 .collapse__menu{
     display: none;
-    padding: .75rem 1.25rem 0 .75rem;
+    padding: 0 1.25rem 0 0;
+    background: #f3f3f3;
 }
 
 .collapse__sublink{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    height: 1.5em;
     text-align: right;
     outline: none;
     border: none;
     background: transparent;
-    color: #929aab;
+    color: #757575;
     font-size: 1.2rem;
 }
 .collapse__sublink:hover{
-    color: #6d747f;
+    color: #2d2d2d;
 }
 
 .showCollapse{
@@ -1927,7 +1945,6 @@ textarea:focus{
 
 .nav__link-document{
     color: #A3ABBC;
-    margin-right: 1vw;
     font-family: 'Josefin Sans', sans-serif;
 }
 

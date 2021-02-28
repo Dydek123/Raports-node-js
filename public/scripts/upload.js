@@ -1,5 +1,5 @@
 const inputs = document.querySelectorAll(".input");
-
+const selects = document.querySelectorAll('#slct');
 
 function addcl(){
 	let parent = this.parentNode.parentNode;
@@ -19,10 +19,33 @@ inputs.forEach(input => {
 	input.addEventListener("blur", remcl);
 });
 
-function changeMe(sel){
-	sel.style.color = "var(--medium-blue)";
-	sel.parentNode.style.borderBottom  = "2px solid var(--light-blue)";
+selects.forEach(select => {
+	select.addEventListener('change', function () {
+		this.style.color = "var(--medium-blue)";
+		this.parentNode.style.borderBottom  = "2px solid var(--light-blue)";
+	})
+})
+
+const content = document.querySelector('.slct-content')
+const showTitle = () => {
+	const titleInputParent = document.querySelector("input[name=title]").parentNode.parentNode;
+	const publicInputParent = document.querySelector("select[name=isPublic]").parentNode;
+	if (content.value === 'new'){
+		titleInputParent.classList.remove('hidden-input');
+		publicInputParent.classList.remove('hidden-input');
+	} else {
+		titleInputParent.classList.add('hidden-input');
+		publicInputParent.classList.add('hidden-input');
+	}
 }
+content.addEventListener('change', showTitle)
+
+
+// for (let i = 0 ; i < selects.length -1 ; i++){
+// 	selects[i].addEventListener('change', () => {
+// 		selects[i+1].classList.remove('hidden');
+// 	})
+// }
 
 // Content
 function showDocumentsType(){

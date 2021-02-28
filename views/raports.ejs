@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!--FONT AWESOME-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/57045c6330.js" crossorigin="anonymous"></script>
+    <!--FONTS GOOGLE-->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Poppins&family=Lato&display=swap" rel="stylesheet">
+    <!--SHADOW ON SCROLL-->
+    <script type="text/javascript" src="/scripts/topnav_shadow.js" defer></script>
+    <script type="text/javascript" src="/scripts/app.js" defer></script>
+    <script type="text/javascript" src="/scripts/search.js" defer></script>
+
+    <link rel="stylesheet" type="text/css" href="/css/main-style.css">
+
+    <title>Cboard - <%= category %></title>
+</head>
+
+<body>
+<header id="finances-header">
+    <div id="finances-header-shadow" class="main-header-shadow">
+        <nav id ="main-topnav" class="topnav">
+
+            <div class="hamburger">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
+
+            <div class="logo">
+                <a href="index"><img alt="logo" src="/img/main-page/logo-light.svg"></a>
+            </div>
+
+            <div class="topnav_menu">
+                <div class="change-language">
+                    <img src="/img/main-page/Polish_flag.png">
+                </div>
+
+                <% if(cookie){%>
+                    <a href="profile" class="topnav__login">Profil użytkownika</a>
+                    <form class="logout_form" method="get" action="logout">
+                        <button name="logout" value="true" class="logout_button">Wyloguj się</button>
+                    </form>
+                <% }else{%>
+                    <a href="login" class="topnav__login">Zaloguj sie</a>
+                <%}%>
+            </div>
+
+
+        </nav>
+    </div>
+</header>
+
+<section class="documentation-box">
+    <h1><%= category %></h1>
+    <div class="sidemenu">
+        <div id="cta">
+            <span class="arrow primera next "></span>
+        </div>
+    </div>
+    <div class="documentation-content">
+        <div class="menu">
+            <div>
+                <form class="documentation-menu" action="finances" method="GET">
+                    <div id="nav__sticky">
+                        <div class="nav__link">
+                            <p class="collapse__link">
+                                <span>Category</span>
+                                <i class="fas fa-caret-down"></i>
+                            </p>
+                            <ul class="collapse__menu">
+                                <button name="category" value="category" class="collapse__sublink">Title</button>
+                            </ul>
+                        </div>
+                    </div>
+                    <% if(cookie){%>
+                        <div class="nav__link nav__link-document">
+                            <a id="new-content-link" href="#"><span>Dodaj nowy dokument <i class="fas fa-plus"></i></span></a>
+                        </div>
+                    <%}%>
+                </form>
+                <div class="search-div">
+                    <input type="text" placeholder="Szukaj..." class="search-btn">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+        </div>
+        <div class="documentation-text">
+            <a href="#img1">
+                <img src="/uploads/docimages/1" id="img1" alt="1">
+            </a>
+
+            <a href="#img1" class="lightbox" id="img1-active">
+                <span style="background-image: url('/uploads/docimages/1')"></span>
+            </a>
+
+            <h2>Poprzednie wersje</h2>
+            <div class="previous-version" >
+                <form class="version-description" method="post" action="deleteVersion">
+                    <a id="enable-to-download" href="/uploads/Documents/1" download>
+                        Author
+                    </a>
+                    <!--                    <?php if ($user>1):?>-->
+                    <button name="version" value="<?= $version->getId()?>"><i class="fas fa-minus"></i></button>
+                    <!--                    <?php endif; ?>-->
+                </form>
+
+            </div>
+            <h4>Komentarze</h4>
+            <form method="POST" action="newComment" class="new-comment">
+                <textarea name="new-comment" id="comment" placeholder="Dodaj nowy komentarz..." minlength="1" required></textarea>
+                <input name="category" value="<?=explode(';',$_GET['category'])[1]?>" class="invisible">
+                <button class="new-comment-button" type="submit">Dodaj</button>
+            </form>
+
+            <div class="comments-section">
+                <div class="one-comment">
+                    <div class="comments-heading">
+                        <div class="comments-author">Jan Kowalski</div>
+                        <div class="comments-date">11.11.2011</div>
+                    </div>
+                    <div class="comment-content">Hello There</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+
+<template id="content-template">
+    <div class="nav__link">
+        <p class="collapse__link">
+            <span>category</span>
+            <i class="fas fa-caret-down"></i>
+        </p>
+        <ul class="collapse__menu">
+        </ul>
+    </div>
+</template>
+
+<template id="content-template-list-element">
+    <button name="category" value="category;title" class="collapse__sublink">title</button>
+</template>
+</html>

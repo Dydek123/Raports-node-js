@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!--FONT AWESOME-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/57045c6330.js" crossorigin="anonymous"></script>
+    <!--FONTS GOOGLE-->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Poppins&family=Lato&display=swap" rel="stylesheet">
+    <!--SHADOW ON SCROLL-->
+    <script type="text/javascript" src="/scripts/topnav_shadow.js" defer></script>
+    <script type="text/javascript" src="/scripts/app.js" defer></script>
+    <script type="text/javascript" src="/scripts/search.js" defer></script>
+
+    <link rel="stylesheet" type="text/css" href="/css/main-style.css">
+
+    <title>Cboard - <%= category %></title>
+</head>
+
+<body>
+<header id="finances-header">
+    <div id="finances-header-shadow" class="main-header-shadow">
+        <%- include('./components/topnav') %>
+    </div>
+</header>
+
+<section class="documentation-box">
+    <h1><%= category %></h1>
+    <div class="sidemenu">
+        <div id="cta">
+            <span class="arrow primera next "></span>
+        </div>
+    </div>
+    <div class="documentation-content">
+        <div class="menu">
+            <div>
+                <form class="documentation-menu" action="finances" method="GET">
+                    <div id="nav__sticky">
+                        <div class="nav__link">
+
+                            <p class="collapse__link">
+                                <span>Raporty</span>
+                                <i class="fas fa-caret-down"></i>
+                            </p>
+                            <ul class="collapse__menu">
+                                <a href="#" class="collapse__sublink">Title</a>
+                                <a href="#" class="collapse__sublink">Title</a>
+                            </ul>
+
+                            <p class="collapse__link">
+                                <span>Dokumentacja</span>
+                                <i class="fas fa-caret-down"></i>
+                            </p>
+                            <ul class="collapse__menu">
+                                <a href="#" class="collapse__sublink">Title</a>
+                            </ul>
+
+                            <p class="collapse__link">
+                                <a href="/content/faq" class="collapse__link-faq">FAQ</a>
+                            </p>
+
+                        </div>
+                    </div>
+                    <% if(cookie){%>
+                        <div class="nav__link nav__link-document">
+                            <a id="new-content-link" href="#"><span>Dodaj nowy dokument <i class="fas fa-plus"></i></span></a>
+                        </div>
+                    <%}%>
+                </form>
+                <div class="search-div">
+                    <input type="text" placeholder="Szukaj..." class="search-btn">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+        </div>
+        <div class="documentation-text">
+            <% if (category==='Raports') {%>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse diam lorem, tempus ut nibh et, sollicitudin tempor purus. Fusce viverra leo non ex pharetra, vehicula fermentum nulla euismod. Praesent quis eleifend orci. Nam quis sem auctor, maximus est ut, faucibus nisl. Vestibulum vitae venenatis ante. In hac habitasse platea dictumst. Proin cursus risus neque, sit amet semper purus semper eget. Proin finibus est a felis rutrum vestibulum eget vitae ipsum. Duis congue neque in erat malesuada finibus.</p>
+                <p>Nulla facilisi. Cras tincidunt, turpis in tempus venenatis, purus orci eleifend magna, ut tempor felis odio id arcu. Aenean in dui porta, sagittis nisl eu, gravida enim. Donec porta tellus erat, vel aliquet lectus placerat nec. Maecenas lectus justo, fringilla vitae velit eget, consectetur posuere ex. Donec volutpat mauris faucibus dui lacinia, vel hendrerit sem cursus. Aenean fringilla ex id enim ultrices, nec pharetra urna tempus.</p>
+                <p>Aenean et scelerisque sapien, a aliquet lorem. Aliquam lobortis urna sit amet congue euismod. Pellentesque facilisis lacinia accumsan. Maecenas ultricies placerat elit, quis hendrerit ante. Vestibulum volutpat risus eros, ac finibus metus venenatis eu. Vivamus turpis felis, molestie sit amet neque sit amet, tristique viverra tellus. Ut et quam ac nisi interdum elementum. Quisque quis pulvinar urna. Duis quis diam varius, imperdiet elit pellentesque, porttitor enim. Maecenas at arcu ultrices, lobortis odio id, congue sem. Curabitur iaculis maximus lacinia.</p>
+            <% }else if(category === 'Documents') {%>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse diam lorem, tempus ut nibh et, sollicitudin tempor purus. Fusce viverra leo non ex pharetra, vehicula fermentum nulla euismod. Praesent quis eleifend orci. Nam quis sem auctor, maximus est ut, faucibus nisl. Vestibulum vitae venenatis ante. In hac habitasse platea dictumst. Proin cursus risus neque, sit amet semper purus semper eget. Proin finibus est a felis rutrum vestibulum eget vitae ipsum. Duis congue neque in erat malesuada finibus.</p>
+                <p>Nulla facilisi. Cras tincidunt, turpis in tempus venenatis, purus orci eleifend magna, ut tempor felis odio id arcu. Aenean in dui porta, sagittis nisl eu, gravida enim. Donec porta tellus erat, vel aliquet lectus placerat nec. Maecenas lectus justo, fringilla vitae velit eget, consectetur posuere ex. Donec volutpat mauris faucibus dui lacinia, vel hendrerit sem cursus. Aenean fringilla ex id enim ultrices, nec pharetra urna tempus.</p>
+                <p>Aenean et scelerisque sapien, a aliquet lorem. Aliquam lobortis urna sit amet congue euismod. Pellentesque facilisis lacinia accumsan. Maecenas ultricies placerat elit, quis hendrerit ante. Vestibulum volutpat risus eros, ac finibus metus venenatis eu. Vivamus turpis felis, molestie sit amet neque sit amet, tristique viverra tellus. Ut et quam ac nisi interdum elementum. Quisque quis pulvinar urna. Duis quis diam varius, imperdiet elit pellentesque, porttitor enim. Maecenas at arcu ultrices, lobortis odio id, congue sem. Curabitur iaculis maximus lacinia.</p>
+                <p>Nulla scelerisque non metus non pellentesque. Vivamus in orci consectetur, elementum lacus in, convallis erat. Duis commodo malesuada mi eu interdum. Quisque et dui ut nisi porttitor volutpat. Duis vitae mollis ipsum. Suspendisse potenti. Fusce libero tortor, auctor sed hendrerit sed, congue nec nulla. Cras hendrerit ante diam, nec ultricies mauris pulvinar quis. Nulla nisi urna, rutrum sit amet gravida quis, euismod a purus. In hac habitasse platea dictumst. Nullam nec arcu pulvinar, hendrerit mauris non, suscipit libero. Phasellus velit enim, accumsan at dolor id, sagittis cursus tellus. Fusce nec arcu nec neque efficitur luctus ut eu justo. Donec tempor lectus ligula, nec finibus dolor tristique sit amet. In lectus urna, tempus non magna eget, dictum gravida turpis. Quisque bibendum non arcu nec euismod.</p>
+                <p>Curabitur egestas consectetur nunc, a eleifend ligula sollicitudin et. Suspendisse mi ligula, tempus quis elit non, pharetra tincidunt est. Quisque iaculis justo diam, nec posuere lectus imperdiet ultricies. Vivamus rutrum ac lorem quis tincidunt. Integer at lectus imperdiet, lobortis ante in, tincidunt felis. Praesent a lectus lobortis, rhoncus lacus et, ultricies diam. Praesent aliquet viverra laoreet. Etiam ultrices, tortor et rutrum dignissim, turpis nulla convallis metus, sed rhoncus ipsum lorem vel nisl. Quisque in rhoncus justo, efficitur rhoncus nunc. Cras sapien risus, congue id nisl quis, tempus laoreet felis. Pellentesque quis ligula tincidunt, rhoncus diam non, tincidunt tortor. Donec a magna leo. Proin rutrum tempus imperdiet. Donec id mollis metus. Duis vel nulla dignissim, ultricies odio eu, sodales dui.</p>
+            <% } else if (category === 'Faq') { %>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse diam lorem, tempus ut nibh et, sollicitudin tempor purus. Fusce viverra leo non ex pharetra, vehicula fermentum nulla euismod. Praesent quis eleifend orci. Nam quis sem auctor, maximus est ut, faucibus nisl. Vestibulum vitae venenatis ante. In hac habitasse platea dictumst. Proin cursus risus neque, sit amet semper purus semper eget. Proin finibus est a felis rutrum vestibulum eget vitae ipsum. Duis congue neque in erat malesuada finibus.</p>
+                <p>Nulla facilisi. Cras tincidunt, turpis in tempus venenatis, purus orci eleifend magna, ut tempor felis odio id arcu. Aenean in dui porta, sagittis nisl eu, gravida enim. Donec porta tellus erat, vel aliquet lectus placerat nec. Maecenas lectus justo, fringilla vitae velit eget, consectetur posuere ex. Donec volutpat mauris faucibus dui lacinia, vel hendrerit sem cursus. Aenean fringilla ex id enim ultrices, nec pharetra urna tempus.</p>
+                <p>Aenean et scelerisque sapien, a aliquet lorem. Aliquam lobortis urna sit amet congue euismod. Pellentesque facilisis lacinia accumsan. Maecenas ultricies placerat elit, quis hendrerit ante. Vestibulum volutpat risus eros, ac finibus metus venenatis eu. Vivamus turpis felis, molestie sit amet neque sit amet, tristique viverra tellus. Ut et quam ac nisi interdum elementum. Quisque quis pulvinar urna. Duis quis diam varius, imperdiet elit pellentesque, porttitor enim. Maecenas at arcu ultrices, lobortis odio id, congue sem. Curabitur iaculis maximus lacinia.</p>
+                <p>Nulla scelerisque non metus non pellentesque. Vivamus in orci consectetur, elementum lacus in, convallis erat. Duis commodo malesuada mi eu interdum. Quisque et dui ut nisi porttitor volutpat. Duis vitae mollis ipsum. Suspendisse potenti. Fusce libero tortor, auctor sed hendrerit sed, congue nec nulla. Cras hendrerit ante diam, nec ultricies mauris pulvinar quis. Nulla nisi urna, rutrum sit amet gravida quis, euismod a purus. In hac habitasse platea dictumst. Nullam nec arcu pulvinar, hendrerit mauris non, suscipit libero. Phasellus velit enim, accumsan at dolor id, sagittis cursus tellus. Fusce nec arcu nec neque efficitur luctus ut eu justo. Donec tempor lectus ligula, nec finibus dolor tristique sit amet. In lectus urna, tempus non magna eget, dictum gravida turpis. Quisque bibendum non arcu nec euismod.</p>
+                <p>Curabitur egestas consectetur nunc, a eleifend ligula sollicitudin et. Suspendisse mi ligula, tempus quis elit non, pharetra tincidunt est. Quisque iaculis justo diam, nec posuere lectus imperdiet ultricies. Vivamus rutrum ac lorem quis tincidunt. Integer at lectus imperdiet, lobortis ante in, tincidunt felis. Praesent a lectus lobortis, rhoncus lacus et, ultricies diam. Praesent aliquet viverra laoreet. Etiam ultrices, tortor et rutrum dignissim, turpis nulla convallis metus, sed rhoncus ipsum lorem vel nisl. Quisque in rhoncus justo, efficitur rhoncus nunc. Cras sapien risus, congue id nisl quis, tempus laoreet felis. Pellentesque quis ligula tincidunt, rhoncus diam non, tincidunt tortor. Donec a magna leo. Proin rutrum tempus imperdiet. Donec id mollis metus. Duis vel nulla dignissim, ultricies odio eu, sodales dui.</p>
+            <% } %>
+        </div>
+    </div>
+</section>
+</body>
+
+<template id="content-template">
+    <div class="nav__link">
+        <p class="collapse__link">
+            <span>category</span>
+            <i class="fas fa-caret-down"></i>
+        </p>
+        <ul class="collapse__menu">
+        </ul>
+    </div>
+</template>
+
+<template id="content-template-list-element">
+    <button name="category" value="category;title" class="collapse__sublink">title</button>
+</template>
+</html>
