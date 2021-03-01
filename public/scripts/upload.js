@@ -29,13 +29,19 @@ selects.forEach(select => {
 const content = document.querySelector('.slct-content')
 const showTitle = () => {
 	const titleInputParent = document.querySelector("input[name=title]").parentNode.parentNode;
+	const titleInput = document.querySelector("input[name=title]");
 	const publicInputParent = document.querySelector("select[name=isPublic]").parentNode;
+	const publicInput = document.querySelector("select[name=isPublic]");
 	if (content.value === 'new'){
 		titleInputParent.classList.remove('hidden-input');
 		publicInputParent.classList.remove('hidden-input');
+		titleInput.required  = true;
+		publicInput.required  = true;
 	} else {
 		titleInputParent.classList.add('hidden-input');
 		publicInputParent.classList.add('hidden-input');
+		titleInput.required  = false;
+		publicInput.required  = false;
 	}
 }
 content.addEventListener('change', showTitle)

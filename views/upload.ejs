@@ -25,31 +25,32 @@
 <div class="upload-container">
     <div class="upload-box">
         <div class="login-content">
-            <form action="/content/new" method="post" encType="multipart/form-data">
+            <form action="/content/upload" method="post" encType="multipart/form-data">
                 <div class="logo">
                     <a href="index"><img src="/img/login/logo-dark.svg"></a>
                 </div>
                 <h2>Nowy dokument</h2>
 
                 <div class="select">
-                    <select name="category" id="slct">
-                        <option selected disabled>Wybierz kategorie</option>
+                    <select name="category" id="slct" required>
+                        <option selected disabled value="">Wybierz kategorie</option>
                         <option value="Raporty">Raporty</option>
                         <option value="Dokumentacja">Dokumentacja</option>
                     </select>
                 </div>
 
                 <div class="select">
-                    <select name="documentType" id="slct">
-                        <option selected disabled>Wybierz podkategorie</option>
+                    <select name="documentType" id="slct" required>
+                        <option selected disabled value="">Wybierz podkategorie</option>
                         <option value="Obsługa podatku VAT">Obsługa podatku VAT</option>
                         <option value="HR">HR</option>
+                        <option value="Podatki VAT">Podatki VAT</option>
                     </select>
                 </div>
 
                 <div class="select">
-                    <select name="documentName" id="slct" class="slct-content">
-                        <option selected disabled>Wybierz dokument</option>
+                    <select name="documentName" id="slct" class="slct-content" required>
+                        <option selected disabled value="">Wybierz dokument</option>
                         <option value="Jak liczyć podatek VAT">Jak liczyć podatek VAT</option>
                         <option value="Rozliczenia podatku">Rozliczenia podatku</option>
                         <option value="new">Stwórz nowy dokument</option>
@@ -58,7 +59,7 @@
 
                 <div class="select hidden-input">
                     <select name="isPublic" id="slct">
-                        <option selected disabled>Wybierz widoczność</option>
+                        <option selected disabled value="">Wybierz widoczność</option>
                         <option value="1">Publiczne</option>
                         <option value="0">Prywatne</option>
                     </select>
@@ -74,18 +75,15 @@
                 <div class="input-div">
                     <div>
                         <h5>Plik</h5>
-                        <input name="file" type="file" class="file-upload input">
+                        <input name="file" type="file" class="file-upload input" required>
                     </div>
                 </div>
 
-<!--                <div class="message">-->
-<!--                    <?php if (isset($messages)) {-->
-<!--                        foreach ($messages as $message){-->
-<!--                            echo $message;-->
-<!--                        }-->
-<!--                    }-->
-<!--                    ?>-->
-<!--                </div>-->
+                <% if (error) {%>
+                    <div class="message">
+                        <%= error %>
+                    </div>
+                <%}%>
                 
                 <button type="submit" class="btn">Prześlij</button>
             </form>
