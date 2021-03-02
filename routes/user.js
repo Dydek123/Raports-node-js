@@ -15,6 +15,34 @@ const isSet = item => {
         return false
     return true
 }
+
+const isAdmin = async (email) => {
+    const user = await User.findOne({
+        where: {email},
+        attributes: ['id_role'],
+        raw: true,
+    })
+    return user.id_role > 1;
+}
+
+const getUserName = async (email) => {
+    const user = await User.findOne({
+        where: {email},
+        attributes: ['name', 'surname'],
+        raw: true
+    })
+    return user.join(' ');
+}
+
+const getUser = async (email) => {
+    const user = await User.findOne({
+        where: {email},
+        attributes: ['name', 'surname', 'id_role'],
+        raw: true
+    })
+    return user;
+}
+
 const capitalizeFirstLetters = (arr) => {
     for (let i = 0 ; i < arr.length ; i++)
         arr[i] = arr[i].charAt(0).toUpperCase() + arr[i].slice(1);;
@@ -231,6 +259,45 @@ router.post('/profile/email_reset', (req, res) => {
         //         res.render('change_email', {message:{status:'error', text: 'Błąd podczas zmiany emaila'}})
         //     })
     }
+})
+
+router.get('/profile/delete_user', async (req, res) => {
+    if(req.session.user){
+        if (await isAdmin(req.session.user))
+            res.render('delete_user', {message:''});
+        else{
+            let user = getUser(req.session.user)
+            res.render('profile', {user, message:{status:'successful', text: 'Nie posiadasz uprawnień administratora'}});
+        }
+    } else
+        res.redirect('/user/login');
+})
+
+router.post('/profile/delete_user', async(req, res) => {
+    if(req.session.user){
+        if (await isAdmin(req.session.user)) {
+            const {email} = req.body;
+            User.findOne({where: {email}})
+                .then(async user => {
+                    if(user !== null) {
+                        user.destroy();
+                        const adminUser = await getUser(req.session.user)
+                        res.render('profile', {user: adminUser, message:{status:'successful', text: 'Użytkownik został usunięty'}})
+                    } else {
+                        res.render('delete_user', {message:{status:'error', text: 'Taki użytkownik nie istnieje'}});
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.render('delete_user', {message:{status:'error', text: 'Błąd podczas usuwania użytkownika'}});
+                })
+        }
+        else{
+            let user = getUserName(req.session.user)
+            res.render('profile', {user, message:{status:'successful', text: 'Nie posiadasz uprawnień administratora'}});
+        }
+    } else
+        res.redirect('/user/login');
 })
 
 router.post('/login', (req, res, next) => {
