@@ -64,6 +64,15 @@ router.get('/uploadCategories', (req, res) => {
         .catch(err => console.log(err))
 })
 
+router.get('/uploadCategories/:title', (req, res) => {
+    const {title} = req.params;
+    Document.findAll({where: {[Op.or]: [ { title: {[Op.iLike]: '%' + title + '%'}} , {document: {[Op.iLike]: '%' + title + '%'}}]}})
+        .then(document => {
+            res.json(document)
+        })
+        .catch(err => console.log(err))
+})
+
 router.post('/upload', async (req, res) => {
     const {category, documentType, documentName, isPublic, title, file} = req.body;
     console.log(title)

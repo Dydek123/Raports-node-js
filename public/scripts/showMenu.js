@@ -80,8 +80,39 @@ const showAll = async type => {
     collapseMenu();
 }
 
-
+const showFound = (list, searchValue) => {
+    let existedTitle = [];
+    let ulList;
+    searchValue = searchValue.toLowerCase();
+    navLink.innerHTML = '' ;
+    for (const element of list) {
+        let dbDocument = element.document.toLowerCase();
+        let dbTitle = element.title.toLowerCase();
+        if(dbDocument.includes(searchValue) || dbTitle.includes(searchValue)){
+            createLink(element.title);
+            ulList = createList(element.document);
+            existedTitle.push(element.title);
+        }
+        createListElement(ulList, element.document)
+    }
+    existedTitle.length = 0;
+    collapseMenu();
+}
 
 showAll(category);
+
+const search = document.querySelector('input[placeholder="Szukaj..."]');
+search.addEventListener('keyup',  (event) =>{
+    if (event.key === "Enter") {
+        event.preventDefault();
+        const data = search.value;
+        if (data === '')
+            showAll(category)
+        else
+            fetch(`/content/uploadCategories/${data}`)
+                .then(response => response.json())
+                .then(docs => showFound(docs, data))
+    }
+})
 
 

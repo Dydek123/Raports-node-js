@@ -48,18 +48,13 @@ search.addEventListener('keyup', function (event){
         event.preventDefault();
 
         const data = {search: this.value};
-        fetch("/search", {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }).then(function (response) {
-            return response.json();
-        }).then(function (contents) {
-            contentContainer.innerHTML = "";
-            loadContents(contents)
-        });
+        fetch("/content/uploadCategories")
+            .then(response => response.json())
+            .then(contents => {
+                contentContainer.innerHTML = "";
+                console.log(contents)
+                // loadContents(contents)
+            });
     }
 })
 
@@ -73,19 +68,12 @@ sidebarButton.addEventListener('click', () => {
     sidebarButton.classList.toggle("change");
 });
 
-const background = document.querySelector('#finances-header');
-
-function setBackground(image){
-    const url = "url('public/uploads/Category/" + image + "')";
-    background.style.backgroundImage = url;
-}
-
-// Add New Comment auto resize textarea
-const tx = document.querySelector('textarea');
-tx.setAttribute('style', 'height:' + (tx.scrollHeight) + 'px;overflow-y:hidden;');
-tx.addEventListener("input", OnInput, false);
-
-function OnInput(e) {
-    this.style.height = 'auto';
-    this.style.height = (this.scrollHeight) + 'px';
-}
+// // Add New Comment auto resize textarea
+// const tx = document.querySelector('textarea');
+// tx.setAttribute('style', 'height:' + (tx.scrollHeight) + 'px;overflow-y:hidden;');
+// tx.addEventListener("input", OnInput, false);
+//
+// function OnInput(e) {
+//     this.style.height = 'auto';
+//     this.style.height = (this.scrollHeight) + 'px';
+// }
