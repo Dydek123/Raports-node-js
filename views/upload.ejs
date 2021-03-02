@@ -16,6 +16,7 @@
     <script type="text/javascript" src="/scripts/topnav_shadow.js" defer></script>
     <script type="text/javascript" src="/scripts/upload.js" defer></script>
     <script type="text/javascript" src="/scripts/show_uploads_categories.js" defer></script>
+    <script type="text/javascript" src="/scripts/uploadDocument.js" defer></script>
 
     <link rel="stylesheet" type="text/css" href="/css/upload.css">
     <title>Cboard - upload document</title>
@@ -39,7 +40,7 @@
                     </select>
                 </div>
 
-                <div class="select">
+                <div class="select hidden-input">
                     <select name="documentType" id="slct" required>
                         <option selected disabled value="">Wybierz podkategorie</option>
                         <option value="Obsługa podatku VAT">Obsługa podatku VAT</option>
@@ -48,7 +49,7 @@
                     </select>
                 </div>
 
-                <div class="select">
+                <div class="select hidden-input">
                     <select name="documentName" id="slct" class="slct-content" required>
                         <option selected disabled value="">Wybierz dokument</option>
                         <option value="Jak liczyć podatek VAT">Jak liczyć podatek VAT</option>
