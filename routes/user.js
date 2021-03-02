@@ -266,8 +266,8 @@ router.get('/profile/delete_user', async (req, res) => {
         if (await isAdmin(req.session.user))
             res.render('delete_user', {message:''});
         else{
-            let user = getUser(req.session.user)
-            res.render('profile', {user, message:{status:'successful', text: 'Nie posiadasz uprawnień administratora'}});
+            let user = await getUser(req.session.user)
+            res.render('profile', {user, message:{status:'error', text: 'Nie posiadasz uprawnień administratora'}});
         }
     } else
         res.redirect('/user/login');
@@ -280,8 +280,8 @@ router.post('/profile/delete_user', async(req, res) => {
             User.findOne({where: {email}})
                 .then(async user => {
                     if(user !== null) {
-                        user.destroy();
                         const adminUser = await getUser(req.session.user)
+                        user.destroy();
                         res.render('profile', {user: adminUser, message:{status:'successful', text: 'Użytkownik został usunięty'}})
                     } else {
                         res.render('delete_user', {message:{status:'error', text: 'Taki użytkownik nie istnieje'}});
@@ -290,6 +290,46 @@ router.post('/profile/delete_user', async(req, res) => {
                 .catch(err => {
                     console.log(err);
                     res.render('delete_user', {message:{status:'error', text: 'Błąd podczas usuwania użytkownika'}});
+                })
+        }
+        else{
+            let user = getUserName(req.session.user)
+            res.render('profile', {user, message:{status:'successful', text: 'Nie posiadasz uprawnień administratora'}});
+        }
+    } else
+        res.redirect('/user/login');
+})
+
+router.get('/profile/make_admin', async (req, res) => {
+    if(req.session.user){
+        if (await isAdmin(req.session.user))
+            res.render('make_admin', {message:''});
+        else{
+            let user = await getUser(req.session.user)
+            res.render('profile', {user, message:{status:'error', text: 'Nie posiadasz uprawnień administratora'}});
+        }
+    } else
+        res.redirect('/user/login');
+})
+
+router.post('/profile/make_admin', async(req, res) => {
+    if(req.session.user){
+        if (await isAdmin(req.session.user)) {
+            const {email} = req.body;
+            User.findOne({where: {email}})
+                .then(async user => {
+                    if(user !== null) {
+                        user.id_role = 2;
+                        const adminUser = await getUser(req.session.user)
+                        user.save();
+                        res.render('profile', {user: adminUser, message:{status:'successful', text: 'Użytkownik został adminem'}})
+                    } else {
+                        res.render('make_admin', {message:{status:'error', text: 'Taki użytkownik nie istnieje'}});
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                    res.render('make_admin', {message:{status:'error', text: 'Błąd podczas zmieniania uprawnień'}});
                 })
         }
         else{
