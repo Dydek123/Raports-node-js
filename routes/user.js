@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require('../config/config');
 const User = require('../models/User');
 const Comment = require('../models/Comment');
+const Category = require('../models/Category');
 const PasswordReset = require('../models/PasswordReset');
 const Sequelize = require('sequelize');
 const md5 = require('md5');
@@ -334,7 +335,54 @@ router.post('/profile/make_admin', async(req, res) => {
         }
         else{
             let user = getUserName(req.session.user)
-            res.render('profile', {user, message:{status:'successful', text: 'Nie posiadasz uprawnień administratora'}});
+            res.render('profile', {user, message:{status:'error', text: 'Nie posiadasz uprawnień administratora'}});
+        }
+    } else
+        res.redirect('/user/login');
+})
+
+router.get('/profile/new_category', async (req, res) => {
+    if(req.session.user){
+        if (await isAdmin(req.session.user))
+            res.render('new_category', {message:''});
+        else{
+            let user = await getUser(req.session.user)
+            res.render('profile', {user, message:{status:'error', text: 'Nie posiadasz uprawnień administratora'}});
+        }
+    } else
+        res.redirect('/user/login');
+})
+
+router.post('/profile/new_category', async(req, res) => {
+    if(req.session.user){
+        if (await isAdmin(req.session.user)) {
+            const {category, title} = req.body;
+            Category.findOne({where: {title}})
+                .then(data => {
+                    console.log(data)
+                    if (data !== null)
+                        res.render('new_category', {message:{status:'error', text: 'Taki dokument już istnieje'}});
+                    else {
+                        let id_categories;
+                        if (category === 'Raporty')
+                            id_categories = 1;
+                        if (category === 'Dokumentacja')
+                            id_categories = 2;
+                        Category.create({id_categories, title})
+                            .then(async () => {
+                                let user = await getUser(req.session.user);
+                                res.render('profile', {user , message:{status:'successful', text: 'Pomyślnie dodano'}})
+                            })
+                            .catch(err => {
+                                console.log(err);
+                                res.render('new_category', {message:{status:'error', text: 'Błąd przy dodawaniu kategorii'}});
+                            })
+                    }
+                })
+        }
+        else{
+            let user = getUserName(req.session.user)
+            res.render('profile', {user, message:{status:'error', text: 'Nie posiadasz uprawnień administratora'}});
         }
     } else
         res.redirect('/user/login');
