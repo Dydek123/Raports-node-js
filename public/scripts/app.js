@@ -19,23 +19,3 @@ hamburger.addEventListener('click', () => {
         changeIcon = false;
     }
 });
-
-// COLLAPSE MENU RAPORTS
-const linkCollapse = document.getElementsByClassName('collapse__link')
-const buttonCollapse = document.getElementsByClassName('nav__link')
-var i
-
-function collapseMenu(){
-    for(i=0;i<linkCollapse.length;i++){
-        linkCollapse[i].addEventListener('click', function(){
-            const collapseMenu = this.nextElementSibling;
-            collapseMenu.classList.toggle('showCollapse');
-
-            const rotateDiv = collapseMenu.previousElementSibling;
-            const rotateElement = rotateDiv.childNodes;
-            rotateElement[3].classList.toggle('rotate');
-            rotateElement[1].classList.toggle('bold');
-        })
-    }
-}
-collapseMenu();

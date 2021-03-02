@@ -75,7 +75,14 @@ h1{
 .logo{
     grid-column: 1/2;
     align-self: self-end;
+    height: 100%;
 }
+
+.logo a{
+    height: 100%;
+    display: flex;
+}
+
 
 .logo img{
     width: 14vw;
@@ -1905,7 +1912,7 @@ textarea:focus{
 }
 
 .bold{
-    font-weight: 500;
+    font-weight: 600;
 }
 
 .search-btn{

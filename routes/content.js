@@ -125,7 +125,7 @@ router.post('/upload', async (req, res) => {
 
 router.get('/:type', (req, res) => {
     let type = req.params.type;
-    if (type === 'raports' || type === 'documents' || type === 'faq') {
+    if (type === 'raports' || type === 'documents') {
         type = type.charAt(0).toUpperCase() + type.slice(1);
         res.render('category', {category:type, cookie: req.session.user})
     } else
@@ -136,5 +136,6 @@ router.get('/:type', (req, res) => {
     //     })
     //     .catch(err => console.log(err))
 })
+
 
 module.exports = router
