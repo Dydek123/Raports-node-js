@@ -99,9 +99,20 @@ const showFound = (list, searchValue) => {
     collapseMenu();
 }
 
-showAll(category);
+// showAll(category);
 
 const search = document.querySelector('input[placeholder="Szukaj..."]');
+const searchIcon = document.querySelector('.fa-search');
+searchIcon.addEventListener('click',  () =>{
+    const data = search.value;
+    if (data === '')
+        showAll(category)
+    else
+        fetch(`/content/uploadCategories/${data}`)
+            .then(response => response.json())
+            .then(docs => showFound(docs, data))
+})
+
 search.addEventListener('keyup',  (event) =>{
     if (event.key === "Enter") {
         event.preventDefault();

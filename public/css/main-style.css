@@ -1948,6 +1948,12 @@ textarea:focus{
     top: 1.4rem;
     right: 2.4rem;
     font-size: 0.9rem;
+    transition: color .4s;
+}
+
+.fa-search:hover{
+    color: var(--light-blue);
+    cursor: pointer;
 }
 
 .nav__link-document{
