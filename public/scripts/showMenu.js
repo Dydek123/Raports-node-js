@@ -64,9 +64,9 @@ const collapseMenu = () =>{
 const showAll = async type => {
     let existedTitle = [];
     let ulList;
-    navLink.innerHTML = '' ;
     await getData()
         .then(data => {
+            navLink.innerHTML = '' ;
             data.forEach(element => {
                 if(element.category === type && !existedTitle.includes(element.title)){
                     createLink(element.title);
@@ -99,7 +99,7 @@ const showFound = (list, searchValue) => {
     collapseMenu();
 }
 
-// showAll(category);
+showAll(category);
 
 const search = document.querySelector('input[placeholder="Szukaj..."]');
 const searchIcon = document.querySelector('.fa-search');

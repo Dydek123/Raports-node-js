@@ -134,6 +134,35 @@ router.post('/upload', async (req, res) => {
 
 router.get('/:type', (req, res) => {
     let type = req.params.type;
+    let typePL;
+    let existedTitle = [];
+    let documents = [];
+    let toReturn = [];
+    if (type === 'raports')
+        typePL = 'Raporty'
+    if (type === 'documents')
+        typePL = 'Dokumenty'
+
+    // Document.findAll({where :{category:typePL}})
+    //     .then(data => {
+    //         let i = -1;
+    //         for (const datum of data) {
+    //             if (!existedTitle.includes(datum.title)){
+    //                 toReturn.push({[datum.title]: [datum.document]});
+    //                 existedTitle.push(datum.title)
+    //                 i++;
+    //             } else{
+    //                 toReturn[i][datum.title].push(datum.document);
+    //                 // toReturn[i].datum.title.push(datum.document);
+    //             }
+    //         }
+    //         console.log(toReturn)
+    //         res.render('category', {category:type, cookie: req.session.user, menu:toReturn})
+    //     })
+    //     .catch(err => {
+    //         console.log(err)
+    //         res.send('Błąd podczas pokazywania menu')
+    //     })
     if (type === 'raports' || type === 'documents') {
         type = type.charAt(0).toUpperCase() + type.slice(1);
         res.render('category', {category:type, cookie: req.session.user})

@@ -1831,6 +1831,12 @@ textarea:focus{
     margin-bottom: 0.5rem;
 }
 
+.nav__link img{
+    width: 60%;
+    margin-right: auto;
+    margin-left: auto;
+}
+
 #new-content-link{
     color: #929aab;
     margin-right: 1rem;
@@ -1948,7 +1954,7 @@ textarea:focus{
     top: 1.4rem;
     right: 2.4rem;
     font-size: 0.9rem;
-    transition: color .4s;
+    transition: color .2s;
 }
 
 .fa-search:hover{
