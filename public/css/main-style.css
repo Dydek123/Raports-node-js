@@ -1712,6 +1712,7 @@ h5{
 .version-description{
     display: flex;
     flex-direction: row;
+    text-align: left;
 }
 
 .version-description button{
@@ -1743,15 +1744,17 @@ h5{
 
 textarea{
     resize: none;
+    display: block;
     border: none;
     border-bottom: 2px solid gray;
     margin-left: 1vw;
     margin-bottom: 1rem;
     outline: none;
     font-size: 1.1rem;
-    height: 1.1rem;
+    line-height: 1.1rem;
     font-family: 'Lato', sans-serif;
-    transition: .4s;
+    transition: .3s;
+    overflow-y: hidden;
     background: var(--light-white);
 }
 
@@ -1808,6 +1811,7 @@ textarea:focus{
 .comment-content{
     font-size: 1.1rem;
     padding-top: .4rem;
+    white-space: pre-line;
 }
 
 #nav__sticky{

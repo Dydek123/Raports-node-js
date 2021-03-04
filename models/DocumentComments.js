@@ -1,28 +1,32 @@
 const Sequelize = require('sequelize');
 const db = require('../config/config');
 
-const Comment = db.define('comment', {
+const DocumentComments = db.define('documentcomment', {
     id_comments: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
         unique: true,
     },
-    id_user: {
-        type: Sequelize.INTEGER
+    name: {
+        type: Sequelize.STRING
     },
     comment: {
         type: Sequelize.STRING
     },
-    id_content: {
-        type: Sequelize.INTEGER
+    title: {
+        type: Sequelize.STRING
+    },
+    updatedAt: {
+        type: Sequelize.DATE
     },
     edited: {
         type: Sequelize.BOOLEAN,
         defaultValue: false
     }
 }, {
-    tableName: 'comments'
+    createdAt: false,
+    tableName: 'document_comments'
 })
 
-module.exports = Comment
+module.exports = DocumentComments

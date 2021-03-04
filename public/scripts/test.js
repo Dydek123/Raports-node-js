@@ -139,15 +139,42 @@ sidebarButton.addEventListener('click', () => {
 
 // Add New Comment auto resize textarea
 const tx = document.querySelector('textarea');
-tx.setAttribute('style', 'height:' + (tx.scrollHeight) + 'px;overflow-y:hidden;');
-tx.addEventListener("input", OnInput, false);
 
-function OnInput(e) {
-    this.style.height = 'auto';
-    this.style.height = (this.scrollHeight) + 'px';
+// function autoHeight(){
+//     this.style.height='auto';
+//     this.style.height=this.scrollHeight+'px';
+// }
+//
+// tx.addEventListener('input', autoHeight)
+//
+// // Dealing with Textarea Height
+// let newCommentForm = document.querySelector('.new-comment');
+// const addAction = (oldForm, path) => {
+//     oldForm.action = window.location.pathname + path
+// }
+// newCommentForm.addEventListener('submit', () => {
+//     addAction(newCommentForm, '/newComment')
+// })
+
+function getScrollHeight(elm){
+    var savedValue = elm.value
+    elm.value = ''
+    elm._baseScrollHeight = elm.scrollHeight
+    elm.value = savedValue
 }
 
-const form = document.querySelector('.new-comment');
-form.addEventListener('submit', () => {
-    form.action = window.location.pathname + '/newComment'
-})
+function onExpandableTextareaInput({ target:elm }){
+    // make sure the input event originated from a textarea and it's desired to be auto-expandable
+    if( !elm.classList.contains('autoExpand')) return
+
+    var minRows = elm.getAttribute('data-min-rows')|0, rows;
+    !elm._baseScrollHeight && getScrollHeight(elm)
+
+    elm.rows = minRows
+    rows = Math.ceil((elm.scrollHeight - elm._baseScrollHeight) / 18)
+    elm.rows = minRows + rows
+}
+
+
+// global delegated event listener
+document.addEventListener('input', onExpandableTextareaInput)

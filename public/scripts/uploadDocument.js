@@ -53,7 +53,7 @@ subcategories.addEventListener('change', () => {
             console.log(subcategories.value)
             if(element.title === subcategories.value) {
                 let newOption = document.createElement('option');
-                newOption.setAttribute('value', element.title)
+                newOption.setAttribute('value', element.document)
                 newOption.innerText = element.document;
                 documentName.appendChild(newOption)
             }

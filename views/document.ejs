@@ -33,7 +33,7 @@
             </div>
 
             <div class="logo">
-                <a href="index"><img alt="logo" src="/img/main-page/logo-light.svg"></a>
+                <a href="/"><img alt="logo" src="/img/main-page/logo-light.svg"></a>
             </div>
 
             <div class="topnav_menu">
@@ -43,7 +43,7 @@
 
                 <% if(cookie){%>
                     <a href="profile" class="topnav__login">Profil użytkownika</a>
-                    <form class="logout_form" method="get" action="logout">
+                    <form class="logout_form" method="get" action="/user/logout">
                         <button name="logout" value="true" class="logout_button">Wyloguj się</button>
                     </form>
                 <% }else{%>
@@ -107,29 +107,35 @@
                         <a id="enable-to-download" href="/uploads/<%=version.id_versions%>_<%=version.file%>" download>
                             <%=version.name%>(<%=version.date%>)
                         </a>
-                        <% if(user) {%>
-                            <button name="version" value="<?= $version->getId()?>"><i class="fas fa-minus"></i></button>
+                        <% if(user.email == version.email || user.id_role > 1) {%>
+                            <button name="version"><i class="fas fa-minus"></i></button>
                         <%}%>
                     </form>
                 <% }) %>
             </div>
             <h4>Komentarze</h4>
-            <% if(user) {%>
+            <% if(cookie) {%>
                 <form method="POST" action="newComment" class="new-comment">
-                    <textarea name="newComment" id="comment" placeholder="Dodaj nowy komentarz..." minlength="1" required></textarea>
-                    <input name="category" value="<?=explode(';',$_GET['category'])[1]?>" class="invisible">
+                    <textarea name="newComment" id="comment" class="autoExpand" placeholder="Dodaj nowy komentarz..." minlength="1" required rows='1' data-min-rows='1'></textarea>
                     <button class="new-comment-button" type="submit">Dodaj</button>
                 </form>
             <% }%>
 
             <div class="comments-section">
-                <div class="one-comment">
-                    <div class="comments-heading">
-                        <div class="comments-author">Jan Kowalski</div>
-                        <div class="comments-date">11.11.2011</div>
+                <% comments.forEach(comment => {%>
+                    <div class="one-comment">
+                        <div class="comments-heading">
+                            <div class="comments-author"><%= comment.name%></div>
+                            <div class="comments-date">
+                                <%= comment.updatedAt %>
+                                <% if (comment.edited){ %>
+                                    (edytowany)
+                                <% } %>
+                            </div>
+                        </div>
+                        <div class="comment-content"><%= comment.comment %></div>
                     </div>
-                    <div class="comment-content">Hello There</div>
-                </div>
+                <% }) %>
             </div>
         </div>
     </div>

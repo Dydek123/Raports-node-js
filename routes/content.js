@@ -5,6 +5,7 @@ const fileUpload = require('express-fileupload');
 const User = require('../models/User');
 const Document = require('../models/Document');
 const Comment = require('../models/Comment');
+const DocumentComments = require('../models/DocumentComments');
 const Content = require('../models/Content');
 const Version = require('../models/Version');
 const Version_details = require('../models/Versions_details');
@@ -61,10 +62,18 @@ const getVersions = async (title) => {
     return version;
 }
 
+const getComments = async (title) => {
+    const comments = await DocumentComments.findAll({
+        where: {title},
+        raw: true
+    })
+    return comments;
+}
+
 const getUser = async (email) => {
     const user = await User.findOne({
         where: {email},
-        attributes: ['id', 'name', 'surname', 'id_role'],
+        attributes: ['id', 'name', 'surname', 'id_role', 'email'],
         raw: true
     })
     return user;
@@ -130,10 +139,8 @@ router.post('/upload', async (req, res) => {
                             res.render('upload', {error: 'Kategoria o takim tytule już istnieje'})
                         }
                     })
-                //TODO add new version
             }
         } else{
-            //TODO add new version
             Content.findOne({where:{title:documentName}})
                 .then(data => {
                     createNewVersion(res, req, data.id_contents)
@@ -169,49 +176,24 @@ router.get('/:type', (req, res) => {
     if (type === 'documents')
         typePL = 'Dokumenty'
 
-    // Document.findAll({where :{category:typePL}})
-    //     .then(data => {
-    //         let i = -1;
-    //         for (const datum of data) {
-    //             if (!existedTitle.includes(datum.title)){
-    //                 toReturn.push({[datum.title]: [datum.document]});
-    //                 existedTitle.push(datum.title)
-    //                 i++;
-    //             } else{
-    //                 toReturn[i][datum.title].push(datum.document);
-    //                 // toReturn[i].datum.title.push(datum.document);
-    //             }
-    //         }
-    //         console.log(toReturn)
-    //         res.render('category', {category:type, cookie: req.session.user, menu:toReturn})
-    //     })
-    //     .catch(err => {
-    //         console.log(err)
-    //         res.send('Błąd podczas pokazywania menu')
-    //     })
     if (type === 'raports' || type === 'documents') {
         type = type.charAt(0).toUpperCase() + type.slice(1);
         res.render('category', {category:type, cookie: req.session.user})
     } else
         res.redirect('/')
-    // Document.findAll()
-    //     .then(document => {
-    //         console.log(document)
-    //     })
-    //     .catch(err => console.log(err))
 })
 
 router.get('/:type/:documentName', async (req, res) => {
     const {type, documentName} = req.params;
-    let role;
+    let user;
     const versions = await getVersions(documentName);
+    const comments = await getComments(documentName);
     if(!req.session.user)
-        role = 0;
+        user = '';
     else {
-        const user = await getUser(req.session.user)
-        role = user.id_role
+        user = await getUser(req.session.user)
     }
-    res.render('document', {category:documentName, cookie: req.session.user, versions, user: role})
+    res.render('document', {category:documentName, cookie: req.session.user, versions, user, comments})
 })
 
 router.post('/:type/:documentName/newComment', async (req, res) => {

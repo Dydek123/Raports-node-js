@@ -23,6 +23,9 @@ const Version_details = db.define('version_details', {
     name: {
         type: Sequelize.STRING,
     },
+    email: {
+        type: Sequelize.STRING,
+    },
 }, {
     timestamps: false,
     tableName: 'versions_details'
