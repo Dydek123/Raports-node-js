@@ -210,4 +210,19 @@ router.post('/:type/:documentName/newComment', async (req, res) => {
     res.redirect(`/content/${type}/${documentName}`)
 })
 
+router.post('/:type/:documentName/deleteVersion', async (req, res) => {
+    const { version } = req.body
+    const {type, documentName } = req.params
+    Version.findOne({where: {id_versions:version}})
+        .then(data => {
+            data.destroy();
+            res.redirect(`/content/${type}/${documentName}`)
+        })
+        .catch(err => {
+            console.log(err)
+            res.redirect(`/error`)
+        })
+
+})
+
 module.exports = router

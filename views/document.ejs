@@ -42,7 +42,7 @@
                 </div>
 
                 <% if(cookie){%>
-                    <a href="profile" class="topnav__login">Profil użytkownika</a>
+                    <a href="/user/profile" class="topnav__login">Profil użytkownika</a>
                     <form class="logout_form" method="get" action="/user/logout">
                         <button name="logout" value="true" class="logout_button">Wyloguj się</button>
                     </form>
@@ -80,7 +80,7 @@
                     </div>
                     <% if(cookie){%>
                         <div class="nav__link nav__link-document">
-                            <a id="new-content-link" href="#"><span>Dodaj nowy dokument <i class="fas fa-plus"></i></span></a>
+                            <a id="new-content-link" href="/content/upload"><span>Dodaj nowy dokument <i class="fas fa-plus"></i></span></a>
                         </div>
                     <%}%>
                 </form>
@@ -108,7 +108,7 @@
                             <%=version.name%>(<%=version.date%>)
                         </a>
                         <% if(user.email == version.email || user.id_role > 1) {%>
-                            <button name="version"><i class="fas fa-minus"></i></button>
+                            <button name="version" value="<%=version.id_versions%>"><i class="fas fa-minus"></i></button>
                         <%}%>
                     </form>
                 <% }) %>

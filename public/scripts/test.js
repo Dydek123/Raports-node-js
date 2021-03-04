@@ -138,26 +138,8 @@ sidebarButton.addEventListener('click', () => {
 });
 
 // Add New Comment auto resize textarea
-const tx = document.querySelector('textarea');
-
-// function autoHeight(){
-//     this.style.height='auto';
-//     this.style.height=this.scrollHeight+'px';
-// }
-//
-// tx.addEventListener('input', autoHeight)
-//
-// // Dealing with Textarea Height
-// let newCommentForm = document.querySelector('.new-comment');
-// const addAction = (oldForm, path) => {
-//     oldForm.action = window.location.pathname + path
-// }
-// newCommentForm.addEventListener('submit', () => {
-//     addAction(newCommentForm, '/newComment')
-// })
-
 function getScrollHeight(elm){
-    var savedValue = elm.value
+    let savedValue = elm.value
     elm.value = ''
     elm._baseScrollHeight = elm.scrollHeight
     elm.value = savedValue
@@ -167,7 +149,7 @@ function onExpandableTextareaInput({ target:elm }){
     // make sure the input event originated from a textarea and it's desired to be auto-expandable
     if( !elm.classList.contains('autoExpand')) return
 
-    var minRows = elm.getAttribute('data-min-rows')|0, rows;
+    let minRows = elm.getAttribute('data-min-rows')|0, rows;
     !elm._baseScrollHeight && getScrollHeight(elm)
 
     elm.rows = minRows
@@ -175,6 +157,22 @@ function onExpandableTextareaInput({ target:elm }){
     elm.rows = minRows + rows
 }
 
-
 // global delegated event listener
 document.addEventListener('input', onExpandableTextareaInput)
+
+//Add action path to new comment form
+const addCommentForm = document.querySelector('.new-comment')
+const addPathToAction = (oldForm, extraPath) => {
+    oldForm.action = window.location.pathname + extraPath;
+}
+addCommentForm.addEventListener('submit', () => {
+    addPathToAction(addCommentForm, '/newComment')
+})
+
+//Add action path to delete version button
+const deleteButton = document.querySelectorAll('button[name="version"]');
+deleteButton.forEach(button => {
+    button.addEventListener('click', () => {
+        addPathToAction(button.closest('form'), '/deleteVersion')
+    })
+})
