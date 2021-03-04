@@ -210,10 +210,25 @@ router.post('/:type/:documentName/newComment', async (req, res) => {
     res.redirect(`/content/${type}/${documentName}`)
 })
 
-router.post('/:type/:documentName/deleteVersion', async (req, res) => {
+router.post('/:type/:documentName/deleteVersion',  (req, res) => {
     const { version } = req.body
     const {type, documentName } = req.params
     Version.findOne({where: {id_versions:version}})
+        .then(data => {
+            data.destroy();
+            res.redirect(`/content/${type}/${documentName}`)
+        })
+        .catch(err => {
+            console.log(err)
+            res.redirect(`/error`)
+        })
+
+})
+
+router.post('/:type/:documentName/deleteComment',  (req, res) => {
+    const { commentDelete } = req.body
+    const {type, documentName } = req.params
+    Comment.findOne({where: {id_comments:commentDelete}})
         .then(data => {
             data.destroy();
             res.redirect(`/content/${type}/${documentName}`)

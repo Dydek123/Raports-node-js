@@ -1808,6 +1808,21 @@ textarea:focus{
     padding-left: 1rem;
 }
 
+button[name='commentUpdate'],
+button[name='commentDelete']
+{
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
+button[name='commentUpdate']:hover{
+    color: var(--light-blue);
+}
+button[name='commentDelete']:hover{
+    color: red;
+}
+
 .comment-content{
     font-size: 1.1rem;
     padding-top: .4rem;

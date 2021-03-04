@@ -107,7 +107,7 @@
                         <a id="enable-to-download" href="/uploads/<%=version.id_versions%>_<%=version.file%>" download>
                             <%=version.name%>(<%=version.date%>)
                         </a>
-                        <% if(user.email == version.email || user.id_role > 1) {%>
+                        <% if(user.email === version.email || user.id_role > 1) {%>
                             <button name="version" value="<%=version.id_versions%>"><i class="fas fa-minus"></i></button>
                         <%}%>
                     </form>
@@ -132,6 +132,12 @@
                                     (edytowany)
                                 <% } %>
                             </div>
+                            <form class="comments-actions" method="post" action="commentAction">
+                                <% if(user.email === comment.email || user.id_role > 1) {%>
+                                <button name="commentUpdate" value="<%=comment.id_comments%>"><i class="fas fa-pencil-alt"></i></button>
+                                <button name="commentDelete" value="<%=comment.id_comments%>"><i class="fas fa-minus"></i></button>
+                                <%}%>
+                            </form>
                         </div>
                         <div class="comment-content"><%= comment.comment %></div>
                     </div>

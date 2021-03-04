@@ -170,9 +170,17 @@ addCommentForm.addEventListener('submit', () => {
 })
 
 //Add action path to delete version button
-const deleteButton = document.querySelectorAll('button[name="version"]');
-deleteButton.forEach(button => {
+const deleteVersionButton = document.querySelectorAll('button[name="version"]');
+deleteVersionButton.forEach(button => {
     button.addEventListener('click', () => {
         addPathToAction(button.closest('form'), '/deleteVersion')
+    })
+})
+
+//Add action path to delete comment button
+const deleteCommentButton = document.querySelectorAll('button[name="commentDelete"]');
+deleteCommentButton.forEach(button => {
+    button.addEventListener('click', () => {
+        addPathToAction(button.closest('form'), '/deleteComment')
     })
 })
