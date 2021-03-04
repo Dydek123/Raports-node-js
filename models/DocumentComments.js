@@ -11,6 +11,9 @@ const DocumentComments = db.define('documentcomment', {
     name: {
         type: Sequelize.STRING
     },
+    email: {
+        type: Sequelize.STRING
+    },
     comment: {
         type: Sequelize.STRING
     },

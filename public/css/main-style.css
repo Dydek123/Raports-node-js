@@ -1762,11 +1762,7 @@ textarea:focus{
     border-bottom: 2px solid var(--medium-blue);
 }
 
-.invisible{
-    display: none;
-}
-
-.new-comment-button{
+.comment-button{
     width: 6rem;
     height: 2rem;
     font-size: 1rem;
@@ -1780,7 +1776,7 @@ textarea:focus{
     transition: .4s;
 }
 
-.new-comment-button:hover{
+.comment-button:hover{
     background-color: var(--medium-blue);
 }
 
@@ -1808,6 +1804,11 @@ textarea:focus{
     padding-left: 1rem;
 }
 
+.comments-actions{
+    display: flex;
+    flex-direction: row;
+}
+
 button[name='commentUpdate'],
 button[name='commentDelete']
 {
@@ -1827,6 +1828,35 @@ button[name='commentDelete']:hover{
     font-size: 1.1rem;
     padding-top: .4rem;
     white-space: pre-line;
+}
+.dbComment{
+    /*display: none;*/
+    margin-left: 1rem;
+}
+.editComment{
+    display: none;
+    flex-direction: column;
+    white-space: normal;
+}
+
+.editComment textarea{
+    width: 100%;
+}
+
+.editComment button{
+    margin-left: auto;
+}
+
+.invisible{
+    display: none;
+}
+
+.showBlock{
+    display: block;
+}
+
+.showFlex{
+    display: flex;
 }
 
 #nav__sticky{
@@ -2054,7 +2084,7 @@ button[name='commentDelete']:hover{
         padding-top: 1vh;
     }
 
-    .new-comment-button{
+    .comment-button{
         align-self: center;
     }
 

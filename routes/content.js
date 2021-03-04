@@ -240,4 +240,21 @@ router.post('/:type/:documentName/deleteComment',  (req, res) => {
 
 })
 
+router.post('/:type/:documentName/updateComment',  (req, res) => {
+    const { editComment, comment } = req.body
+    const {type, documentName } = req.params
+    res.redirect(`/content/${type}/${documentName}`)
+    Comment.findOne({where: {id_comments:comment}})
+        .then(data => {
+            data.comment = editComment;
+            data.edited = true;
+            data.save()
+            res.redirect(`/content/${type}/${documentName}`)
+        })
+        .catch(err => {
+            console.log(err)
+            res.redirect(`/error`)
+        })
+})
+
 module.exports = router

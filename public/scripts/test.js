@@ -151,36 +151,61 @@ function onExpandableTextareaInput({ target:elm }){
 
     let minRows = elm.getAttribute('data-min-rows')|0, rows;
     !elm._baseScrollHeight && getScrollHeight(elm)
-
     elm.rows = minRows
     rows = Math.ceil((elm.scrollHeight - elm._baseScrollHeight) / 18)
     elm.rows = minRows + rows
 }
 
 // global delegated event listener
-document.addEventListener('input', onExpandableTextareaInput)
+// document.addEventListener('input', onExpandableTextareaInput)
 
 //Add action path to new comment form
 const addCommentForm = document.querySelector('.new-comment')
 const addPathToAction = (oldForm, extraPath) => {
     oldForm.action = window.location.pathname + extraPath;
 }
+
+const updateForm = (form, path) => {
+    form.forEach(button => {
+        button.addEventListener('click', () => {
+            addPathToAction(button.closest('form'), path)
+        })
+    })
+}
+
 addCommentForm.addEventListener('submit', () => {
     addPathToAction(addCommentForm, '/newComment')
 })
 
 //Add action path to delete version button
 const deleteVersionButton = document.querySelectorAll('button[name="version"]');
-deleteVersionButton.forEach(button => {
-    button.addEventListener('click', () => {
-        addPathToAction(button.closest('form'), '/deleteVersion')
-    })
-})
+updateForm(deleteVersionButton, '/deleteVersion');
 
 //Add action path to delete comment button
 const deleteCommentButton = document.querySelectorAll('button[name="commentDelete"]');
-deleteCommentButton.forEach(button => {
+updateForm(deleteCommentButton, '/deleteComment');
+
+function setHeight(element) {
+    element.style.height = ""; /* Reset the height*/
+    element.style.height = element.scrollHeight + "px";
+};
+function autoHeight() {
+    this.style.height = ""; /* Reset the height*/
+    this.style.height = this.scrollHeight + "px";
+};
+
+//Add action path to update comment button
+const updateCommentButton = document.querySelectorAll('button[name="commentUpdate"]');
+updateCommentButton.forEach(button => {
     button.addEventListener('click', () => {
-        addPathToAction(button.closest('form'), '/deleteComment')
+        console.log(button.closest('.one-comment').childNodes)
+        const dbComment = button.closest('.one-comment').childNodes[3];
+        const editComment = button.closest('.one-comment').childNodes[5];
+        let commentText = dbComment.childNodes[0];
+        dbComment.classList.toggle('invisible');
+        editComment.classList.toggle('showFlex');
+        editComment.childNodes[1].value = commentText.textContent;
+        addPathToAction(editComment.childNodes[1].closest('form'), '/updateComment');
+        setHeight(editComment.childNodes[1])
     })
 })

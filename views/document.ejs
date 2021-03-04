@@ -117,7 +117,7 @@
             <% if(cookie) {%>
                 <form method="POST" action="newComment" class="new-comment">
                     <textarea name="newComment" id="comment" class="autoExpand" placeholder="Dodaj nowy komentarz..." minlength="1" required rows='1' data-min-rows='1'></textarea>
-                    <button class="new-comment-button" type="submit">Dodaj</button>
+                    <button class="comment-button" type="submit">Dodaj</button>
                 </form>
             <% }%>
 
@@ -132,14 +132,24 @@
                                     (edytowany)
                                 <% } %>
                             </div>
-                            <form class="comments-actions" method="post" action="commentAction">
-                                <% if(user.email === comment.email || user.id_role > 1) {%>
-                                <button name="commentUpdate" value="<%=comment.id_comments%>"><i class="fas fa-pencil-alt"></i></button>
-                                <button name="commentDelete" value="<%=comment.id_comments%>"><i class="fas fa-minus"></i></button>
-                                <%}%>
-                            </form>
+                            <% if(user.email === comment.email || user.id_role > 1) {%>
+                                <div class="comments-actions">
+                                    <% if(user.email === comment.email){ %>
+                                    <button name="commentUpdate" value="<%=comment.id_comments%>"><i class="fas fa-pencil-alt"></i></button>
+                                    <% } %>
+                                    <% if(user.id_role > 1){ %>
+                                    <form method="post" action="commentAction">
+                                        <button name="commentDelete" value="<%=comment.id_comments%>"><i class="fas fa-minus"></i></button>
+                                    </form>
+                                    <% } %>
+                                </div>
+                            <%}%>
                         </div>
-                        <div class="comment-content"><%= comment.comment %></div>
+                        <div class="comment-content dbComment"><%= comment.comment %></div>
+                        <form class="comment-content editComment" method="POST" action="editComment">
+                            <textarea name="editComment" class="autoExpand" placeholder="Dodaj nowy komentarz..." minlength="1" required data-min-rows='2'></textarea>
+                            <button name="comment" value="<%=comment.id_comments%>" class="comment-button" type="submit">Edytuj</button>
+                        </form>
                     </div>
                 <% }) %>
             </div>
