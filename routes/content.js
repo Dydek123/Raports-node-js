@@ -7,6 +7,7 @@ const Document = require('../models/Document');
 const Comment = require('../models/Comment');
 const Content = require('../models/Content');
 const Version = require('../models/Version');
+const Version_details = require('../models/Versions_details');
 const Sequelize = require('sequelize');
 const mime = require('mime-types')
 const md5 = require('md5');
@@ -50,6 +51,31 @@ const createNewVersion = async (res, req, id_content) => {
                 }
             })
     }
+}
+
+const getVersions = async (title) => {
+    const version = await Version_details.findAll({
+        where: {title},
+        raw: true
+    })
+    return version;
+}
+
+const getUser = async (email) => {
+    const user = await User.findOne({
+        where: {email},
+        attributes: ['id', 'name', 'surname', 'id_role'],
+        raw: true
+    })
+    return user;
+}
+
+const getContentID = async (title) => {
+    const version = await Content.findOne({
+        where: {title},
+        raw: true
+    })
+    return version.id_contents;
 }
 
 router.get('/upload', (req, res) => {
@@ -175,5 +201,31 @@ router.get('/:type', (req, res) => {
     //     .catch(err => console.log(err))
 })
 
+router.get('/:type/:documentName', async (req, res) => {
+    const {type, documentName} = req.params;
+    let role;
+    const versions = await getVersions(documentName);
+    if(!req.session.user)
+        role = 0;
+    else {
+        const user = await getUser(req.session.user)
+        role = user.id_role
+    }
+    res.render('document', {category:documentName, cookie: req.session.user, versions, user: role})
+})
+
+router.post('/:type/:documentName/newComment', async (req, res) => {
+    const { newComment } = req.body;
+    const {type, documentName } = req.params
+    let role;
+    const id_content = await getContentID(documentName)
+    if(!req.session.user)
+        role = 0;
+    else {
+        const user = await getUser(req.session.user);
+        Comment.create({id_user: user.id, comment:newComment, id_content});
+    }
+    res.redirect(`/content/${type}/${documentName}`)
+})
 
 module.exports = router

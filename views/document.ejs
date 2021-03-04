@@ -13,8 +13,8 @@
     <!--SHADOW ON SCROLL-->
     <script type="text/javascript" src="/scripts/topnav_shadow.js" defer></script>
     <script type="text/javascript" src="/scripts/app.js" defer></script>
-    <script type="text/javascript" src="/scripts/search.js" defer></script>
-<!--    <script type="text/javascript" src="/scripts/showMenu.js" defer></script>-->
+<!--    <script type="text/javascript" src="/scripts/search.js" defer></script>-->
+    <script type="text/javascript" src="/scripts/test.js" defer></script>
 
     <link rel="stylesheet" type="text/css" href="/css/main-style.css">
 
@@ -47,7 +47,7 @@
                         <button name="logout" value="true" class="logout_button">Wyloguj się</button>
                     </form>
                 <% }else{%>
-                    <a href="login" class="topnav__login">Zaloguj sie</a>
+                    <a href="/user/login" class="topnav__login">Zaloguj sie</a>
                 <%}%>
             </div>
 
@@ -92,31 +92,35 @@
         </div>
         <div class="documentation-text">
             <a href="#img1">
-                <img src="/uploads/docimages/1" id="img1" alt="1">
+                123
+<!--                <img src="/uploads/docimages/1" id="img1" alt="1">-->
             </a>
 
             <a href="#img1" class="lightbox" id="img1-active">
-                <span style="background-image: url('/uploads/docimages/1')"></span>
+<!--                <span style="background-image: url('/uploads/docimages/1')"></span>-->
             </a>
 
             <h2>Poprzednie wersje</h2>
             <div class="previous-version" >
-                <form class="version-description" method="post" action="deleteVersion">
-                    <a id="enable-to-download" href="/uploads/Documents/1" download>
-                        Author
-                    </a>
-                    <!--                    <?php if ($user>1):?>-->
-                    <button name="version" value="<?= $version->getId()?>"><i class="fas fa-minus"></i></button>
-                    <!--                    <?php endif; ?>-->
-                </form>
-
+                <% versions.forEach(version => { %>
+                    <form class="version-description" method="post" action="deleteVersion">
+                        <a id="enable-to-download" href="/uploads/<%=version.id_versions%>_<%=version.file%>" download>
+                            <%=version.name%>(<%=version.date%>)
+                        </a>
+                        <% if(user) {%>
+                            <button name="version" value="<?= $version->getId()?>"><i class="fas fa-minus"></i></button>
+                        <%}%>
+                    </form>
+                <% }) %>
             </div>
             <h4>Komentarze</h4>
-            <form method="POST" action="newComment" class="new-comment">
-                <textarea name="new-comment" id="comment" placeholder="Dodaj nowy komentarz..." minlength="1" required></textarea>
-                <input name="category" value="<?=explode(';',$_GET['category'])[1]?>" class="invisible">
-                <button class="new-comment-button" type="submit">Dodaj</button>
-            </form>
+            <% if(user) {%>
+                <form method="POST" action="newComment" class="new-comment">
+                    <textarea name="newComment" id="comment" placeholder="Dodaj nowy komentarz..." minlength="1" required></textarea>
+                    <input name="category" value="<?=explode(';',$_GET['category'])[1]?>" class="invisible">
+                    <button class="new-comment-button" type="submit">Dodaj</button>
+                </form>
+            <% }%>
 
             <div class="comments-section">
                 <div class="one-comment">
