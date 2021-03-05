@@ -1,20 +1,22 @@
 const express = require('express');
-const router = express.Router();
-const db = require('../config/config');
+const md5 = require('md5');
+const date = require('date-and-time');
 const User = require('../models/User');
-const Comment = require('../models/Comment');
 const Category = require('../models/Category');
 const PasswordReset = require('../models/PasswordReset');
-const Sequelize = require('sequelize');
-const md5 = require('md5');
-const Op = Sequelize.Op;
-const { QueryTypes } = require('sequelize');
-const date = require('date-and-time');
+
+const router = express.Router();
+
+// TODO Delete if not crash
+// const Sequelize = require('sequelize');
+// const db = require('../config/config');
+// const Comment = require('../models/Comment');
+// const Op = Sequelize.Op;
+// const { QueryTypes } = require('sequelize');
 
 const isSet = item => {
-    if (item === null || item === undefined)
-        return false
-    return true
+    return !(item === null || item === undefined);
+
 }
 
 const isAdmin = async (email) => {
@@ -36,12 +38,11 @@ const getUserName = async (email) => {
 }
 
 const getUser = async (email) => {
-    const user = await User.findOne({
+    return await User.findOne({
         where: {email},
-        attributes: ['name', 'surname', 'id_role'],
+        attributes: ['name', 'surname', 'id_role', 'email'],
         raw: true
-    })
-    return user;
+    });
 }
 
 const capitalizeFirstLetters = (arr) => {
@@ -108,29 +109,32 @@ const isUnique = async (email) => {
     return user === null;
 }
 
-/* GET home page. */
+// Login panel
 router.get('/login', (req, res, next) => {
     const cookie = req.session.user;
     if (isSet(cookie))
-        res.redirect('/')
+        res.redirect('/');
     else
-        res.render('login', {errors : ''});
+        res.render('login', {message : ''});
 });
 
+// Sign up panel
 router.get('/register', (req, res, next) => {
     const cookie = req.session.user;
     if (isSet(cookie)) {
-        res.render('register', {error: 'Wyloguj się aby przejść dalej'});
+        res.redirect('/');
     }
     else
         res.render('register', {errors : ''});
 });
 
+// Logout
 router.get('/logout', (req, res) => {
     req.session = null;
     res.redirect('/user/login');
 });
 
+// User and admin panel
 router.get('/profile', (req, res) => {
     User.findOne({where : {email:req.session.user}})
         .then(user => {
@@ -139,13 +143,18 @@ router.get('/profile', (req, res) => {
         .catch(() => res.redirect('/user/login'))
 })
 
+// Change_password
 router.get('/profile/change_password', (req, res) => {
-    res.render('change_password', {message:{}})
+    const cookie = req.session.user;
+    if (isSet(cookie)) {
+        res.render('change_password', {message:{}})
+    }
+    else
+        res.redirect('/user/login')
 })
 
 router.post('/profile/change_password', (req, res) => {
     const {password, passwordRepeat} = req.body;
-    console.log(req.body)
     if (!password || !passwordRepeat)
         res.render('change_password', {message:{status:'error', text: 'Oba pola są wymagane'}})
     else if (password !== passwordRepeat)
@@ -164,14 +173,49 @@ router.post('/profile/change_password', (req, res) => {
     }
 })
 
+// Change email
 router.get('/profile/change_email', (req, res) => {
-    res.render('change_email', {message:{allowKey: false}})
+    const cookie = req.session.user;
+    if (isSet(cookie)) {
+        res.render('change_email', {message:{}})
+    }
+    else
+        res.redirect('/user/login')
 })
 
-router.post('/profile/change_email', (req, res) => {
+router.post('/profile/change_email', async (req, res) => {
+    const {email, newEmail} = req.body;
+    if (email !== req.session.user){
+        res.render('change_email', {message:{status:'error', text: 'Sprawdź wprowadzone dane'}});
+        return;
+    }
+    if(!await isUnique(newEmail)){
+        res.render('change_email', {message:{status:'error', text: 'Email zajęty'}});
+        return;
+    } else {
+        User.findOne({where: {email: req.session.user}})
+            .then(user => {
+                user.email = newEmail;
+                req.session.user = newEmail;
+                user.save()
+                res.render('profile', {user, message:{status:'successful', text: 'Zmieniono poprawnie'}})
+            })
+            .catch(err => {
+                console.log(err)
+                res.render('forget_password', {message:{status:'error', text: 'Błąd podczas zmiany', email, allowKey: true}});
+            })
+    }
+})
+
+// Forget password
+router.get('/forgot_password', (req, res) => {
+    res.render('forgot_password', {message:{allowKey: false}})
+})
+
+router.post('/generate_key', (req, res) => {
     const {email} = req.body;
     if (!email)
-        res.render('change_email', {message:{status:'error', text: 'Wprowadź email', allowKey: false}})
+        res.render('forgot_password', {message:{status:'error', text: 'Wprowadź email', allowKey: false}})
     else{
         User.findOne({where:{email}})
             .then(data => {
@@ -181,30 +225,33 @@ router.post('/profile/change_email', (req, res) => {
                     let key = generateRandomString();
                     PasswordReset.create({email, key, expDate:date.format(expDate, 'YYYY/MM/DD HH:mm:ss')})
                         .then(() => {
-                            res.render('change_email', {message:{status:'successful',email, text: 'Na podany e-mail został wysłany kod potwierdzający', allowKey: true}});
+                            console.log(key)
+                            res.render('forgot_password', {message:{status:'successful',email, text: `Na podany e-mail został wysłany kod potwierdzający (${key})`, allowKey: true}});
                         })
                         .catch(err => {
                             console.log(err);
-                            res.render('change_email', {message:{status:'error', text: 'Błąd podczas generowania klucza', allowKey: false}});
+                            res.render('forgot_password', {message:{status:'error', text: 'Błąd podczas generowania klucza', allowKey: false}});
                         })
                 } else
-                    res.render('change_email', {message:{status:'error', text: 'Użytkownik z takim e-mailem nie istnieje', allowKey: false}})
+                    res.render('forgot_password', {message:{status:'error', text: 'Użytkownik z takim e-mailem nie istnieje', allowKey: false}})
 
             })
             .catch(err => {
                 console.log(err);
-                res.render('change_email', {message:{status:'error', text: 'Błąd podczas zmiany emaila', allowKey: false}})
+                res.render('forgot_password', {message:{status:'error', text: 'Błąd podczas zmiany hasła', allowKey: false}})
             })
     }
 })
 
-router.post('/profile/email_reset', (req, res) => {
-    const {email, key, newEmail} = req.body;
+router.post('/recover_password', (req, res) => {
+    const {email, key, newPassword} = req.body;
     const limit = 5;
-    if (!email || !key)
-        res.render('change_email', {message:{status:'error', text: 'Obie wartości są wymagane', email, allowKey: true}});
+    if (!email || !key || !newPassword)
+        res.render('forgot_password', {message:{status:'error', text: 'Obie wartości są wymagane', email, allowKey: true}});
+    else if (req.session.user)
+        res.redirect('/')
     else{
-         PasswordReset.findAll({where: {email}, order: [
+        PasswordReset.findAll({where: {email}, order: [
                 ['expDate', 'DESC']
             ], limit:limit
         })
@@ -218,47 +265,25 @@ router.post('/profile/email_reset', (req, res) => {
                         break;
                     }
                 }
-                if (isValid && await isUnique(newEmail)) {
-                    User.findOne({where: {email: req.session.user}})
+                if (isValid) {
+                    User.findOne({where: {email}})
                         .then(user => {
-                            user.email = newEmail;
-                            req.session.user = newEmail;
+                            console.log(user)
+                            user.password = md5(md5(newPassword));
                             user.save()
-                            res.render('profile', {user, message:{status:'successful', text: 'Zmieniono poprawnie'}})
+                            res.render('login', {user, message:{status:'successful', text: 'Zmieniono poprawnie'}})
                         })
                         .catch(err => {
                             console.log(err)
-                            res.render('change_email', {message:{status:'error', text: 'Błąd podczas akutalizacji e-maila', email, allowKey: true}});
+                            res.render('forgot_password', {message:{status:'error', text: 'Błąd podczas zmiany', email, allowKey: true}});
                         })
                 } else
-                    res.render('change_email', {message:{status:'error', text: 'Podany klucz jest nieprawidłowy lub użytkownik o takim emailu już istnieje', email, allowKey: true}});
+                    res.render('forgot_password', {message:{status:'error', text: 'Podany klucz jest nieprawidłowy lub użytkownik o takim emailu już istnieje', email, allowKey: true}});
             })
             .catch(err => {
                 console.log(err)
-                res.render('change_email', {message:{status:'error', text: 'Błąd podczas szukania kluczy', email, allowKey: true}});
+                res.render('forgot_password', {message:{status:'error', text: 'Błąd podczas szukania kluczy', email, allowKey: true}});
             })
-        // User.findOne({where:{email}})
-        //     .then(data => {
-        //         if (data !== null){
-        //             const expDate = new Date();
-        //             expDate.setHours(expDate.getHours()+2)
-        //             let key = generateRandomString();
-        //             PasswordReset.create({email, key, expDate:date.format(expDate, 'YYYY/MM/DD HH:mm:ss')})
-        //                 .then(() => {
-        //                     res.render('change_email', {message:{status:'successful', text: 'Na podany e-mail został wysłany kod potwierdzający', email}});
-        //                 })
-        //                 .catch(err => {
-        //                     console.log(err);
-        //                     res.render('change_email', {message:{status:'error', text: 'Błąd podczas generowania klucza'}});
-        //                 })
-        //         } else
-        //             res.render('change_email', {message:{status:'error', text: 'Użytkownik z takim e-mailem nie istnieje'}})
-        //
-        //     })
-        //     .catch(err => {
-        //         console.log(err);
-        //         res.render('change_email', {message:{status:'error', text: 'Błąd podczas zmiany emaila'}})
-        //     })
     }
 })
 
@@ -403,8 +428,7 @@ router.post('/login', (req, res, next) => {
                 res.render('index', {cookie: req.session.user})
             }
             else {
-                console.log('Nie')
-                res.render('login', {errors: 'Nie ma takiego użytkownika'});
+                res.render('login', {message:{status:'error', text: 'Nieprawidłowe dane logowania'}});
             }
         })
         .catch(err => console.log(err))
@@ -418,14 +442,14 @@ router.post('/addUser', ((req, res) => {
     let name = fullName[0];
     let surname = fullName.slice(1).join(' ');
     if(!surname) {
-        res.render('register', {errors: 'Wprowadź imię i nazwisko'})
+        res.render('register', {message:{status:'error', text: 'Wprowadź imię i nazwisko'}})
     } else if (password !== repeatPassword) {
-        res.render('register', {errors: 'Hasła nie są takie same'})
+        res.render('register', {message:{status:'error', text: 'Hasła nie są takie same'}})
     } else {
         password = md5(md5(password))
         User.create({name, surname, email, password})
-            .then(() => res.redirect('/user/login'))
-            .catch(() => res.render('register', {errors: 'Użytkownik o takim emailu już istnieje'}))
+            .then(() => res.render('login', {message:{status:'successful', text: 'Konto zostało utworzone'}}))
+            .catch(() => res.render('register', {message:{status:'error', text: 'Użytkownik o takim emailu już istnieje'}}))
     }
 }))
 

@@ -67,7 +67,7 @@
 
                 </div>
 
-                <a href="forgotPassword">Zapomniałeś hasła?</a>
+                <a href="/user/forgot_password">Zapomniałeś hasła?</a>
 
                 <input type="submit" class="btn" value="Login">
 
@@ -75,9 +75,9 @@
                     Nie masz jeszcze konta?<a href="/user/register">Dołącz do nas teraz</a>
                 </div>
 
-                <% if (errors) {%>
-                    <div class="message">
-                        <span><%= errors %></span>
+                <% if(message) {%>
+                    <div class="message-<%= message.status %>">
+                        <%= message.text%>
                     </div>
                 <% } %>
             </form>

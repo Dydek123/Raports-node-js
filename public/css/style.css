@@ -418,7 +418,12 @@ a:hover{
 	}
 }
 
-.message{
+.message-error{
     color: darkred;
+    font-size: 1.1rem;
+}
+
+.message-successful{
+    color: lime;
     font-size: 1.1rem;
 }

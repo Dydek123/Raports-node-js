@@ -13,52 +13,38 @@
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Poppins&family=Lato&display=swap" rel="stylesheet">
 
     <!--SHADOW ON SCROLL-->
+    <script type="text/javascript" src="/scripts/topnav_shadow.js" defer></script>
     <script type="text/javascript" src="/scripts/upload.js" defer></script>
-    <script type="text/javascript" src="/scripts/change_email.js" defer></script>
+
     <link rel="stylesheet" type="text/css" href="/css/upload.css">
-    <title>Cboard - upload document</title>
+    <title>Cboard - change email</title>
 </head>
 
 <body>
 <div class="upload-container">
     <div class="upload-box">
         <div class="login-content">
-            <% if(!message.allowKey) {%>
-            <form action="change_email" method="POST">
-            <% }else{ %>
-            <form action="email_reset" method="POST">
-            <% } %>
+            <form action="/user/profile/change_email" method="POST">
                 <div class="logo">
                     <a href="/"><img src="/img/login/logo-dark.svg"></a>
                 </div>
                 <h2>Zmień email</h2>
 
+                <div class="input-div">
+                    <div>
+                        <h5>Wprowadź aktualny email</h5>
+                        <input name="email"  type="email" class="input" required>
+                    </div>
+                </div>
 
                 <div class="input-div">
                     <div>
-                        <h5>E-mail</h5>
-                        <input name="email"  type="email" class="input" required value="<%=message.email%>">
+                        <h5>Wprowadź nowy email</h5>
+                        <input name="newEmail"  type="email" class="input" required>
                     </div>
                 </div>
-                <% if(message.allowKey) {%>
-                    <div class="input-div">
-                        <div>
-                            <h5>Wprowadź nowy e-mail</h5>
-                            <input name="newEmail" type="email" class="input" required">
-                        </div>
-                    </div>
-                <% } %>
 
                 <% if(message) {%>
-                    <% if(message.allowKey) {%>
-                        <div class="input-div">
-                            <div>
-                                <h5>Wprowadź klucz</h5>
-                                <input name="key"  type="text" class="input">
-                            </div>
-                        </div>
-                    <% } %>
-
                     <div class="message-<%= message.status %>">
                         <%= message.text%>
                     </div>

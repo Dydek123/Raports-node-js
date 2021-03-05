@@ -69,9 +69,11 @@
                         </div>
                     </div>
 
-                    <div class="message">
-                        <span><%= errors %></span>
-                    </div>
+                    <% if(message) {%>
+                        <div class="message-<%= message.status %>">
+                            <%= message.text%>
+                        </div>
+                    <% } %>
                     <input type="submit" class="btn" value="Zarejestruj się">
                 </form>
             </div>
