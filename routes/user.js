@@ -118,6 +118,27 @@ router.get('/login', (req, res, next) => {
         res.render('login', {message : ''});
 });
 
+router.post('/login', (req, res, next) => {
+    const body = req.body;
+    let {email, password} = body;
+    User.findOne({
+        where: {
+            email,
+            password: md5(md5(password))
+        }
+    })
+        .then(logged => {
+            if (logged) {
+                req.session.user = email;
+                res.render('index', {cookie: req.session.user})
+            }
+            else {
+                res.render('login', {message:{status:'error', text: 'Nieprawidłowe dane logowania'}});
+            }
+        })
+        .catch(err => console.log(err))
+});
+
 // Sign up panel
 router.get('/register', (req, res, next) => {
     const cookie = req.session.user;
@@ -209,7 +230,12 @@ router.post('/profile/change_email', async (req, res) => {
 
 // Forget password
 router.get('/forgot_password', (req, res) => {
-    res.render('forgot_password', {message:{allowKey: false}})
+    const cookie = req.session.user;
+    if (!isSet(cookie)) {
+        res.render('forgot_password', {message:{allowKey: false}})
+    }
+    else
+        res.redirect('/user/login')
 })
 
 router.post('/generate_key', (req, res) => {
@@ -287,6 +313,7 @@ router.post('/recover_password', (req, res) => {
     }
 })
 
+// Delete user
 router.get('/profile/delete_user', async (req, res) => {
     if(req.session.user){
         if (await isAdmin(req.session.user))
@@ -305,7 +332,7 @@ router.post('/profile/delete_user', async(req, res) => {
             const {email} = req.body;
             User.findOne({where: {email}})
                 .then(async user => {
-                    if(user !== null) {
+                    if(user !== null && user.id_role<2) {
                         const adminUser = await getUser(req.session.user)
                         user.destroy();
                         res.render('profile', {user: adminUser, message:{status:'successful', text: 'Użytkownik został usunięty'}})
@@ -326,6 +353,7 @@ router.post('/profile/delete_user', async(req, res) => {
         res.redirect('/user/login');
 })
 
+// Create admin
 router.get('/profile/make_admin', async (req, res) => {
     if(req.session.user){
         if (await isAdmin(req.session.user))
@@ -366,6 +394,7 @@ router.post('/profile/make_admin', async(req, res) => {
         res.redirect('/user/login');
 })
 
+//Create new category
 router.get('/profile/new_category', async (req, res) => {
     if(req.session.user){
         if (await isAdmin(req.session.user))
@@ -413,26 +442,6 @@ router.post('/profile/new_category', async(req, res) => {
         res.redirect('/user/login');
 })
 
-router.post('/login', (req, res, next) => {
-    const body = req.body;
-    let {email, password} = body;
-    User.findOne({
-        where: {
-            email,
-            password: md5(md5(password))
-        }
-    })
-        .then(logged => {
-            if (logged) {
-                req.session.user = email;
-                res.render('index', {cookie: req.session.user})
-            }
-            else {
-                res.render('login', {message:{status:'error', text: 'Nieprawidłowe dane logowania'}});
-            }
-        })
-        .catch(err => console.log(err))
-});
 
 router.post('/addUser', ((req, res) => {
     const body = req.body;
