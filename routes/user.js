@@ -146,7 +146,7 @@ router.get('/register', (req, res, next) => {
         res.redirect('/');
     }
     else
-        res.render('register', {errors : ''});
+        res.render('register', {message : ''});
 });
 
 // Logout

@@ -3,6 +3,7 @@ const router = express.Router();
 const db = require('../config/config');
 const fileUpload = require('express-fileupload');
 const User = require('../models/User');
+const Faq = require('../models/Faq');
 const Document = require('../models/Document');
 const Comment = require('../models/Comment');
 const DocumentComments = require('../models/DocumentComments');
@@ -93,7 +94,6 @@ router.get('/upload', (req, res) => {
 
 router.get('/categories/:category', (req, res) => {
     const { category } = req.params;
-    console.log(123)
     Document.findAll({where:{category}})
         .then(document => {
             res.json(document)
@@ -192,6 +192,15 @@ router.get('/:type', (req, res) => {
     if (type === 'raports' || type === 'documents') {
         type = type.charAt(0).toUpperCase() + type.slice(1);
         res.render('category', {category:type, cookie: req.session.user})
+    } else if (type === 'faq'){
+        Faq.findAll()
+            .then(faq => {
+                res.render('faq', {category:type, cookie: req.session.user, faq});
+            })
+            .catch(err => {
+                console.log(err);
+                res.redirect('/')
+            })
     } else
         res.redirect('/')
 })
@@ -240,6 +249,20 @@ router.get('/:type/:documentName', async (req, res) =>{
     }
 })
 
+router.post('/faq', async (req, res) => {
+    const { question, answer } = req.body;
+    if(!req.session.user) {
+        res.redirect(`/content/faq`);
+    }
+    else {
+        Faq.create({question, answer})
+            .then(insert => res.redirect(`/content/faq`))
+            .catch(err => {
+                console.log(err);
+                res.redirect(`/content/faq`);
+            })
+    }
+})
 
 router.post('/:type/:documentName/newComment', async (req, res) => {
     const { newComment } = req.body;

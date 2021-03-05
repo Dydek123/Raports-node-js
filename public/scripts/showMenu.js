@@ -6,8 +6,10 @@ if (category === 'raports')
     category = 'Raporty'
 if (category === 'documents')
     category = 'Dokumentacja'
+if (category === 'faq')
+    category = 'Dokumentacja'
 
-getData = async () => {
+const getData = async () => {
     const data = await fetch(`categories/${category}`);
     return data.json();
 }
@@ -86,14 +88,17 @@ const showFound = (list, searchValue) => {
     searchValue = searchValue.toLowerCase();
     navLink.innerHTML = '' ;
     for (const element of list) {
+        console.log(element)
         let dbDocument = element.document.toLowerCase();
         let dbTitle = element.title.toLowerCase();
         if(dbDocument.includes(searchValue) || dbTitle.includes(searchValue)){
-            createLink(element.title);
-            ulList = createList(element.document);
-            existedTitle.push(element.title);
+            if(!existedTitle.includes(element.title)){
+                createLink(element.title);
+                ulList = createList(element.document);
+                existedTitle.push(element.title)
+            }
+            createListElement(ulList, element.document)
         }
-        createListElement(ulList, element.document)
     }
     existedTitle.length = 0;
     collapseMenu();

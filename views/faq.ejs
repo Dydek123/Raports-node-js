@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!--FONT AWESOME-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/57045c6330.js" crossorigin="anonymous"></script>
+    <!--FONTS GOOGLE-->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&family=Poppins&family=Lato&display=swap" rel="stylesheet">
+    <!--SHADOW ON SCROLL-->
+    <script type="text/javascript" src="/scripts/topnav_shadow.js" defer></script>
+    <script type="text/javascript" src="/scripts/app.js" defer></script>
+    <script type="text/javascript" src="/scripts/expandTextarea.js" defer></script>
+    <!--    <script type="text/javascript" src="/scripts/search.js" defer></script>-->
+<!--    <script type="text/javascript" src="/scripts/showMenu.js" defer></script>-->
+
+    <link rel="stylesheet" type="text/css" href="/css/main-style.css">
+
+    <title>Cboard - <%= category %></title>
+</head>
+
+<body>
+<header id="finances-header">
+    <div id="finances-header-shadow" class="main-header-shadow">
+        <%- include('./components/topnav') %>
+    </div>
+</header>
+
+<section class="documentation-box">
+    <h1>FAQ</h1>
+    <div class="sidemenu">
+        <div id="cta">
+            <span class="arrow primera next "></span>
+        </div>
+    </div>
+    <div class="documentation-content" id="documentation-content-faq">
+<!--        <div class="menu">-->
+<!--            <div>-->
+<!--                <form class="documentation-menu" action="finances" method="GET">-->
+<!--                    <div id="nav__sticky">-->
+<!--                        <div class="nav__link">-->
+<!--                            <img src="/img/preloader.gif">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <% if(cookie){%>-->
+<!--                        <div class="nav__link nav__link-document">-->
+<!--                            <a id="new-content-link" href="/content/upload"><span>Dodaj nowy dokument <i class="fas fa-plus"></i></span></a>-->
+<!--                        </div>-->
+<!--                    <%}%>-->
+<!--                </form>-->
+<!--                <div class="search-div">-->
+<!--                    <input type="text" placeholder="Szukaj..." class="search-btn">-->
+<!--                    <i class="fas fa-search"></i>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+        <div class="documentation-text" id="documentation-text-faq">
+            <% for (let i = 1 ; i<=faq.length ; i++ ){%>
+                <span><%= i %>. <%= faq[i-1].question%></span>
+                <p><%= faq[i-1].answer%></p>
+            <%}%>
+
+            <% if (cookie){ %>
+                <h3>Dodaj nowe pytanie:</h3>
+                <form method="POST" action="/content/faq" class="new-comment">
+                    <textarea name="question" class="autoExpand" placeholder="Pytanie:" minlength="1" required rows='1' data-min-rows='1'></textarea>
+                    <textarea name="answer" class="autoExpand" placeholder="Odpowiedź:" minlength="1" required rows='1' data-min-rows='1'></textarea>
+                    <button class="comment-button" type="submit">Dodaj</button>
+                </form>
+            <% } %>
+        </div>
+    </div>
+</section>
+</body>
+
+<template id="content-template">
+    <div class="nav__link">
+        <p class="collapse__link">
+            <span>category</span>
+            <i class="fas fa-caret-down"></i>
+        </p>
+        <ul class="collapse__menu">
+        </ul>
+    </div>
+</template>
+
+<template id="content-template-list-element">
+    <button name="category" value="category;title" class="collapse__sublink">title</button>
+</template>
+</html>

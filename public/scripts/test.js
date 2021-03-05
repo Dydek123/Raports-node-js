@@ -7,8 +7,9 @@ if (category === 'raports')
 if (category === 'documents')
     category = 'Dokumenty'
 
+
 const getData = async () => {
-    const data = await fetch('/content/uploadCategories');
+    const data = await fetch(`/content/categories/${category}`);
     return data.json();
 }
 
@@ -173,10 +174,11 @@ const updateForm = (form, path) => {
     })
 }
 
-addCommentForm.addEventListener('submit', () => {
-    addPathToAction(addCommentForm, '/newComment')
-})
-
+if (addCommentForm !== null) {
+    addCommentForm.addEventListener('submit', () => {
+        addPathToAction(addCommentForm, '/newComment')
+    })
+}
 //Add action path to delete version button
 const deleteVersionButton = document.querySelectorAll('button[name="version"]');
 updateForm(deleteVersionButton, '/deleteVersion');

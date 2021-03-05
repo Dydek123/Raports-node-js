@@ -1744,6 +1744,21 @@ h5{
     color: #e31414;
 }
 
+#documentation-text-faq{
+    width: 100%;
+    padding-left: 0;
+}
+
+#documentation-content-faq{
+    margin-right: auto;
+    margin-left: auto;
+    width: 80%;
+}
+
+#documentation-text-faq p{
+    padding-left: 0;
+}
+
 .documentation-text h4{
     font-size: 1.4rem;
 }

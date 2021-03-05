@@ -24,35 +24,7 @@
 <body>
 <header id="finances-header">
     <div id="finances-header-shadow" class="main-header-shadow">
-        <nav id ="main-topnav" class="topnav">
-
-            <div class="hamburger">
-                <div class="line"></div>
-                <div class="line"></div>
-                <div class="line"></div>
-            </div>
-
-            <div class="logo">
-                <a href="/"><img alt="logo" src="/img/main-page/logo-light.svg"></a>
-            </div>
-
-            <div class="topnav_menu">
-                <div class="change-language">
-                    <img src="/img/main-page/Polish_flag.png">
-                </div>
-
-                <% if(cookie){%>
-                    <a href="/user/profile" class="topnav__login">Profil użytkownika</a>
-                    <form class="logout_form" method="get" action="/user/logout">
-                        <button name="logout" value="true" class="logout_button">Wyloguj się</button>
-                    </form>
-                <% }else{%>
-                    <a href="/user/login" class="topnav__login">Zaloguj sie</a>
-                <%}%>
-            </div>
-
-
-        </nav>
+        <%- include('./components/topnav') %>
     </div>
 </header>
 
