@@ -209,3 +209,18 @@ updateCommentButton.forEach(button => {
         setHeight(editComment.childNodes[1])
     })
 })
+
+//READ DOCX
+const docxText = document.querySelector('.documentation-docx');
+let tmp = docxText.innerText;
+docxText.innerHTML = tmp;
+docxText.style.display = 'block';
+
+let docxImages = docxText.querySelectorAll('img');
+docxImages.forEach(docxImg => {
+    docxImg.addEventListener('click', () => {
+        docxImg.closest('p').classList.toggle('lightbox');
+        docxImg.classList.toggle('zoomImg')
+    })
+})
+

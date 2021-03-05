@@ -5,10 +5,10 @@ category = category[category.length-1];
 if (category === 'raports')
     category = 'Raporty'
 if (category === 'documents')
-    category = 'Dokumenty'
+    category = 'Dokumentacja'
 
-const getData = async () => {
-    const data = await fetch('uploadCategories');
+getData = async () => {
+    const data = await fetch(`categories/${category}`);
     return data.json();
 }
 

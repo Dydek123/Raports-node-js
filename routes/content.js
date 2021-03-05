@@ -91,6 +91,16 @@ router.get('/upload', (req, res) => {
     res.render('upload', {error: ''})
 })
 
+router.get('/categories/:category', (req, res) => {
+    const { category } = req.params;
+    console.log(123)
+    Document.findAll({where:{category}})
+        .then(document => {
+            res.json(document)
+        })
+        .catch(err => console.log(err))
+})
+
 router.get('/uploadCategories', (req, res) => {
     Document.findAll()
         .then(document => {
@@ -126,6 +136,7 @@ router.post('/upload', async (req, res) => {
                     res.render('upload', {error: 'Błąd'});
                     })
                 const id_document = id_documents.id;
+                console.log(id_document)
                 Content.create({
                     id_document,
                     is_public: isPublic,
@@ -165,6 +176,8 @@ router.post('/upload', async (req, res) => {
     // res.render('upload', {error: ''})
 })
 
+let mammoth = require("mammoth");
+
 router.get('/:type', (req, res) => {
     let type = req.params.type;
     let typePL;
@@ -183,7 +196,7 @@ router.get('/:type', (req, res) => {
         res.redirect('/')
 })
 
-router.get('/:type/:documentName', async (req, res) => {
+router.get('/:type/:documentName', async (req, res) =>{
     const {type, documentName} = req.params;
     let user;
     const versions = await getVersions(documentName);
@@ -193,8 +206,40 @@ router.get('/:type/:documentName', async (req, res) => {
     else {
         user = await getUser(req.session.user)
     }
-    res.render('document', {category:documentName, cookie: req.session.user, versions, user, comments})
+    if (!versions.length) {
+        let html = '<h2>Ten dokument nie posiada żadnej treści</h2>\n <a href="/content/upload">Dodaj pierwszy dokument</a>\n';
+        console.log(html)
+        res.render('document', {category: documentName, cookie: req.session.user, versions, user, comments, html: html})
+    }
+    else {
+        let options = {
+            convertImage: mammoth.images.imgElement(function(image) {
+                return image.read("base64").then(function(imageBuffer) {
+                    return {
+                        src: "data:" + image.contentType + ";base64," + imageBuffer
+                    };
+                });
+            })
+        };
+        const fileName = versions[0].id_versions + '_' + versions[0].file;
+        const filePath = path.join(path.resolve('./public/uploads'), fileName);
+        mammoth.convertToHtml({path: filePath}, options)
+            .then(function (result) {
+                let html = result.value; // The generated HTML
+                let messages = result.messages; // Any messages, such as warnings during conversion
+                res.render('document', {
+                    category: documentName,
+                    cookie: req.session.user,
+                    versions,
+                    user,
+                    comments,
+                    html
+                })
+            })
+            .done();
+    }
 })
+
 
 router.post('/:type/:documentName/newComment', async (req, res) => {
     const { newComment } = req.body;

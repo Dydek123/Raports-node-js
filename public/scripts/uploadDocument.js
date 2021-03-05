@@ -49,9 +49,7 @@ subcategories.addEventListener('change', () => {
     cleanNext(documentName, 'Wybierz dokument');
     jsonContent.then(data => {
         data.forEach(element => {
-            console.log(element.document)
-            console.log(subcategories.value)
-            if(element.title === subcategories.value) {
+            if(element.title === subcategories.value && element.document!== null) {
                 let newOption = document.createElement('option');
                 newOption.setAttribute('value', element.document)
                 newOption.innerText = element.document;
